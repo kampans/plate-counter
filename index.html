@@ -3,30 +3,61 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171717">
   <title>Plate counter</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main>
-    <header><h1>Plate counter</h1><p>Add a plate to each side of the bar.</p></header>
-    <section class="scene-wrap" aria-label="Barbell visualization">
-      <div id="barbell-scene"></div>
-      <p id="scene-error" hidden>3D visualization could not be loaded. The counter still works.</p>
+    <header class="header">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"><span></span></span><h1>Plate counter</h1></div>
+
+    </header>
+    <div class="app-layout">
+    <div class="workspace">
+      <section class="visual" aria-label="Barbell visualization">
+
+        <div class="scene-wrap">
+          <div id="barbell-scene"></div>
+          <p id="scene-error" hidden>3D visualization could not be loaded. The counter still works.</p>
+        </div>
+      </section>
+      <section class="counter" aria-label="Barbell weight">
+        <div class="counter-heading"><p>Total weight</p><span>KG</span></div>
+        <div class="total"><span id="total" aria-live="off">20</span> <span>kg</span></div>
+        <p id="total-announcement" class="sr-only" aria-live="polite"></p>
+        <div class="counter-details"><p><span>BAR</span><strong id="bar-weight">20 kg</strong></p><p><span>PLATES / SIDE</span><strong id="per-side">0 kg</strong></p></div>
+      </section>
+      <section class="controls" aria-labelledby="plates-title">
+        <div class="controls-heading"><div><h2 id="plates-title">Add plates</h2></div><p>One tap adds a pair</p></div>
+        <div id="plate-buttons" class="plate-buttons"></div>
+        <div class="actions"><button id="undo" type="button" disabled>Undo</button><button id="clear" type="button" disabled>Clear all</button></div>
+      </section>
+    </div>
+    <section class="warmup" aria-labelledby="warmup-title">
+      <div class="warmup-heading"><h2 id="warmup-title">Warm-up calculator</h2><p>Build up to your top set without doing too much.</p></div>
+      <form id="warmup-form">
+        <div class="warmup-inputs">
+          <label for="top-weight">Top-set weight <span>kg</span><input id="top-weight" type="number" min="20" step="2.5" inputmode="decimal" placeholder="e.g. 122.5" required></label>
+          <label for="top-reps">Top-set reps<input id="top-reps" type="number" min="1" max="30" step="1" inputmode="numeric" value="1" required></label>
+        </div>
+        <button type="submit" class="warmup-submit">Calculate warm-up</button>
+      </form>
+      <div id="warmup-result" aria-live="polite"></div>
+      <p class="warmup-note">Keep warm-up sets easy. Rest as needed, especially before your top set.</p>
     </section>
-    <section class="counter" aria-label="Barbell weight">
-      <p>Total weight</p>
-      <div class="total"><span id="total" aria-live="off">20</span> <span>kg</span></div>
-      <p id="total-announcement" class="sr-only" aria-live="polite"></p>
-      <p><span id="bar-weight">20 kg</span> bar · <span id="per-side">0 kg</span> of plates per side</p>
-    </section>
-    <section class="controls" aria-labelledby="plates-title">
-      <h2 id="plates-title">Add plates</h2>
-      <div id="plate-buttons" class="plate-buttons"></div>
-      <div class="actions"><button id="undo" type="button" disabled>Undo</button><button id="clear" type="button" disabled>Clear</button></div>
-    </section>
+    </div>
+    <footer><span>PLATE COUNTER</span><span>LOADED ON BOTH SIDES</span></footer>
   </main>
   <script src="config.js"></script>
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/examples/jsm/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+  </script>
   <script type="module" src="scene.js"></script>
   <script src="script.js"></script>
+  <script src="warmup.js"></script>
 </body>
 </html>
+
+
+
