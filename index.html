@@ -1,67 +1,32 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Plate Counter</title>
-	<link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plate counter</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div class="container">
-		<div class="card">
-			<div class="section-title">target weight</div>
-
-			<div class="input-group">
-				<div>
-					<label for="target">weight</label>
-					<input type="number" id="target" placeholder="e.g. 100" step="0.25" min="0" />
-				</div>
-				<div>
-					<label for="unit">units</label>
-					<select id="unit">
-						<option value="kg">kg</option>
-						<option value="lbs">lbs</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="section-title">barbell weight</div>
-			<div class="bar-select">
-				<button type="button" class="bar-btn active" data-bar="20">20 kg</button>
-				<button type="button" class="bar-btn" data-bar="15">15 kg</button>
-				<button type="button" class="bar-btn" data-bar="custom">custom</button>
-			</div>
-			<div class="custom-bar-wrap" style="display: none;">
-				<label for="customBar">custom bar (kg)</label>
-				<input type="number" id="customBar" placeholder="20" step="0.25" min="0" />
-			</div>
-
-			<button type="button" class="calc-btn" id="calc">calculate</button>
-		</div>
-
-		<div class="card results" id="results" style="display: none;">
-			<div class="total-weight">
-				<div class="label">total bar weight</div>
-				<div class="value" id="totalDisplay">0 kg</div>
-			</div>
-			<div class="per-side" id="perSide">per side</div>
-
-			<div id="plateList"></div>
-
-		</div>
-
-		<div class="empty-state" id="emptyState">
-			<p>enter a target weight</p>
-			<p style="font-size: 0.85rem;">and hit calculate</p>
-		</div>
-
-		<div class="footer">
-			plate counter &bull; built for powerlifters
-		</div>
-	</div>
-
-	<div class="toast" id="toast"></div>
-
-	<script src="script.js"></script>
+  <main>
+    <header><h1>Plate counter</h1><p>Add a plate to each side of the bar.</p></header>
+    <section class="scene-wrap" aria-label="Barbell visualization">
+      <div id="barbell-scene"></div>
+      <p id="scene-error" hidden>3D visualization could not be loaded. The counter still works.</p>
+    </section>
+    <section class="counter" aria-label="Barbell weight">
+      <p>Total weight</p>
+      <div class="total"><span id="total" aria-live="off">20</span> <span>kg</span></div>
+      <p id="total-announcement" class="sr-only" aria-live="polite"></p>
+      <p><span id="bar-weight">20 kg</span> bar · <span id="per-side">0 kg</span> of plates per side</p>
+    </section>
+    <section class="controls" aria-labelledby="plates-title">
+      <h2 id="plates-title">Add plates</h2>
+      <div id="plate-buttons" class="plate-buttons"></div>
+      <div class="actions"><button id="undo" type="button" disabled>Undo</button><button id="clear" type="button" disabled>Clear</button></div>
+    </section>
+  </main>
+  <script src="config.js"></script>
+  <script type="module" src="scene.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

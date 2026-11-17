@@ -1,183 +1,58 @@
-// plate counter logic
+﻿const config = window.PLATE_COUNTER_CONFIG;
+const history = [];
+const totalDisplay = document.getElementById("total");
+const perSideDisplay = document.getElementById("per-side");
+const undo = document.getElementById("undo");
+const clear = document.getElementById("clear");
+let displayedTotal = config.barWeight;
+let animationFrame;
 
-// eleiko plate colors (kg) - official color coding
-const PLATES_KG = [
-	{ weight: 25, color: "#cc0000", textColor: "#fff" }, // red
-	{ weight: 20, color: "#1a52cc", textColor: "#fff" }, // blue
-	{ weight: 15, color: "#e8c800", textColor: "#000" }, // yellow
-	{ weight: 10, color: "#1a7a1a", textColor: "#fff" }, // green
-	{ weight: 5,  color: "#f0f0f0", textColor: "#000" }, // white
-	{ weight: 2.5, color: "#111111", textColor: "#fff" }, // black
-	{ weight: 1.25, color: "#888888", textColor: "#fff" }, // grey
-	{ weight: 0.5,  color: "#f0f0f0", textColor: "#000" },
-	{ weight: 0.25, color: "#888888", textColor: "#fff" }
-];
+// The scene module installs these hooks after loading; the counter also works without it.
+window.addPlate = window.addPlate || function () {};
+window.removePlate = window.removePlate || function () {};
 
-// plate definitions (lbs)
-const PLATES_LBS = [
-	{ weight: 45,   color: "#e8c800", textColor: "#000" },
-	{ weight: 35,   color: "#1a52cc", textColor: "#fff" },
-	{ weight: 25,   color: "#cc0000", textColor: "#fff" },
-	{ weight: 10,   color: "#f0f0f0", textColor: "#000" },
-	{ weight: 5,    color: "#1a7a1a", textColor: "#fff" },
-	{ weight: 2.5,  color: "#800080", textColor: "#fff" },
-	{ weight: 1.25, color: "#f0f0f0", textColor: "#000" },
-	{ weight: 0.5,  color: "#f0f0f0", textColor: "#000" }
-];
-
-// app state
-const state = {
-	unit: "kg",
-	barWeight: 20,
-	targetWeight: 0
-};
-
-// dom elements
-const targetInput = document.getElementById("target");
-const unitSelect = document.getElementById("unit");
-const calcBtn = document.getElementById("calc");
-const results = document.getElementById("results");
-const emptyState = document.getElementById("emptyState");
-const totalDisplay = document.getElementById("totalDisplay");
-const perSideDisplay = document.getElementById("perSide");
-const plateList = document.getElementById("plateList");
-const toast = document.getElementById("toast");
-const barBtns = document.querySelectorAll(".bar-btn");
-const customBarWrap = document.querySelector(".custom-bar-wrap");
-const customBarInput = document.getElementById("customBar");
-
-// event listeners
-calcBtn.addEventListener("click", calculate);
-targetInput.addEventListener("keypress", (e) => {
-	if (e.key === "Enter") calculate();
-});
-
-unitSelect.addEventListener("change", () => {
-	state.unit = unitSelect.value;
-	calculate();
-});
-
-barBtns.forEach((btn) => {
-	btn.addEventListener("click", () => {
-		barBtns.forEach((b) => b.classList.remove("active"));
-		btn.classList.add("active");
-
-		const val = btn.dataset.bar;
-		if (val === "custom") {
-			customBarWrap.style.display = "block";
-			state.barWeight = parseFloat(customBarInput.value) || 20;
-			customBarInput.focus();
-		} else {
-			customBarWrap.style.display = "none";
-			state.barWeight = parseFloat(val);
-		}
-		calculate();
-	});
-});
-
-customBarInput.addEventListener("input", () => {
-	state.barWeight = parseFloat(customBarInput.value) || 20;
-	calculate();
-});
-
-// main calculation
-function calculate() {
-	const raw = parseFloat(targetInput.value);
-	if (isNaN(raw) || raw <= 0) {
-		showToast("enter a valid weight");
-		return;
-	}
-
-	state.targetWeight = raw;
-	const bar = state.barWeight;
-	const plates = state.unit === "kg" ? PLATES_KG : PLATES_LBS;
-
-	// weight per side excluding the bar
-	let remaining = (state.targetWeight - bar) / 2;
-
-	if (remaining < 0) {
-		showToast("target is lighter than the bar");
-		results.style.display = "none";
-		emptyState.style.display = "block";
-		return;
-	}
-
-	const counts = {};
-	let loadedPerSide = 0;
-
-	// greedy: largest plates first
-	for (const p of plates) {
-		if (remaining <= 0) break;
-		const count = Math.floor(remaining / p.weight);
-		if (count > 0) {
-			counts[p.weight] = count;
-			loadedPerSide += count * p.weight;
-			remaining -= count * p.weight;
-		}
-	}
-
-	const totalPerSide = bar / 2 + loadedPerSide;
-	const total = totalPerSide * 2;
-
-	renderResults(counts, total, totalPerSide, loadedPerSide, remaining);
+function formatWeight(weight) { return Number(weight.toFixed(2)).toString(); }
+function animateTotal(target) {
+  cancelAnimationFrame(animationFrame);
+  const start = displayedTotal;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    displayedTotal = target;
+    totalDisplay.textContent = formatWeight(target);
+    return;
+  }
+  const startTime = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - startTime) / 350, 1);
+    displayedTotal = start + (target - start) * (1 - Math.pow(1 - progress, 3));
+    totalDisplay.textContent = formatWeight(displayedTotal);
+    if (progress < 1) animationFrame = requestAnimationFrame(tick);
+  }
+  animationFrame = requestAnimationFrame(tick);
 }
-// render results to the dom
-function renderResults(counts, total, totalPerSide, loadedPerSide, remaining) {
-	emptyState.style.display = "none";
-	results.style.display = "block";
-
-	totalDisplay.textContent = total.toFixed(2) + " " + state.unit;
-	perSideDisplay.textContent = "per side (" + totalPerSide.toFixed(2) + " " + state.unit + ")";
-
-	plateList.innerHTML = "";
-
-	const plates = state.unit === "kg" ? PLATES_KG : PLATES_LBS;
-	let hasPlates = false;
-
-	for (const p of plates) {
-		const count = counts[p.weight] || 0;
-		if (count > 0) {
-			hasPlates = true;
-			const row = document.createElement("div");
-			row.className = "plate-row";
-
-			const swatch = document.createElement("div");
-			swatch.className = "plate-swatch";
-			swatch.style.background = p.color;
-			swatch.style.color = p.textColor || "#000";
-			swatch.textContent = p.weight;
-
-			const info = document.createElement("div");
-			info.className = "plate-info";
-
-			const weightDiv = document.createElement("div");
-			weightDiv.className = "plate-weight";
-			weightDiv.textContent = p.weight + " " + state.unit;
-
-			const countDiv = document.createElement("div");
-			countDiv.className = "plate-count";
-			countDiv.innerHTML = '<span class="num">' + count + "</span> x per side";
-
-			info.appendChild(weightDiv);
-			info.appendChild(countDiv);
-
-			row.appendChild(swatch);
-			row.appendChild(info);
-			plateList.appendChild(row);
-		}
-	}
-
-	if (!hasPlates) {
-		const row = document.createElement("div");
-		row.className = "plate-row";
-		row.innerHTML = '<div class="plate-info"><div class="plate-weight">bar only</div><div class="plate-count">no plates needed</div></div>';
-		plateList.appendChild(row);
-	}
-
+function render() {
+  const perSide = history.reduce((sum, weight) => sum + weight, 0);
+  const total = config.barWeight + perSide * 2;
+  animateTotal(total);
+  document.getElementById("total-announcement").textContent = `Total weight: ${formatWeight(total)} kilograms`;
+  perSideDisplay.textContent = `${formatWeight(perSide)} kg`;
+  document.querySelectorAll(".plate-choice").forEach((choice) => { const count = history.filter(item => item === Number(choice.dataset.weight)).length; choice.querySelector(".plate-count").textContent = `${count} per side`; });
+  undo.disabled = clear.disabled = history.length === 0;
 }
+document.getElementById("bar-weight").textContent = `${formatWeight(config.barWeight)} kg`;
+config.plates.forEach((plate) => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "plate-button";
+  button.style.setProperty("--plate-color", plate.color);
+  button.style.setProperty("--plate-text", plate.textColor);
+  button.setAttribute("aria-label", `Add a pair of ${plate.weight} kilogram plates`);
+  button.innerHTML = `${plate.weight}<small>kg</small>`;
+  button.addEventListener("click", () => { history.push(plate.weight); window.addPlate(plate.weight); render(); });
+  const choice = document.createElement("div"); choice.className = "plate-choice"; choice.dataset.weight = plate.weight; const count = document.createElement("span"); count.className = "plate-count"; choice.append(button, count); document.getElementById("plate-buttons").appendChild(choice);
+});
+undo.addEventListener("click", () => { if (history.length) { history.pop(); window.removePlate(); render(); } });
+clear.addEventListener("click", () => { while (history.length) { history.pop(); window.removePlate(); } render(); });
+// The scene may finish loading after the user has already interacted.
+window.getLoadedPlates = () => [...history];
+render();
 
-function showToast(msg) {
-	toast.textContent = msg;
-	toast.classList.add("show");
-	setTimeout(() => toast.classList.remove("show"), 2000);
-}
