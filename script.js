@@ -1,28 +1,28 @@
 // plate counter logic
 
-// plate definitions (kg) - calibrated colors
+// eleiko plate colors (kg) - official color coding
 const PLATES_KG = [
-	{ weight: 25, color: "#ff0000" }, // red
-	{ weight: 20, color: "#0080ff" }, // blue
-	{ weight: 15, color: "#ffd700" }, // yellow
-	{ weight: 10, color: "#008000" }, // green
-	{ weight: 5, color: "#ffffff" },  // white
-	{ weight: 2.5, color: "#000000" }, // black
-	{ weight: 1.25, color: "#808080" }, // grey
-	{ weight: 0.5, color: "#ffffff" },
-	{ weight: 0.25, color: "#808080" }
+	{ weight: 25, color: "#cc0000", textColor: "#fff" }, // red
+	{ weight: 20, color: "#1a52cc", textColor: "#fff" }, // blue
+	{ weight: 15, color: "#e8c800", textColor: "#000" }, // yellow
+	{ weight: 10, color: "#1a7a1a", textColor: "#fff" }, // green
+	{ weight: 5,  color: "#f0f0f0", textColor: "#000" }, // white
+	{ weight: 2.5, color: "#111111", textColor: "#fff" }, // black
+	{ weight: 1.25, color: "#888888", textColor: "#fff" }, // grey
+	{ weight: 0.5,  color: "#f0f0f0", textColor: "#000" },
+	{ weight: 0.25, color: "#888888", textColor: "#fff" }
 ];
 
 // plate definitions (lbs)
 const PLATES_LBS = [
-	{ weight: 45, color: "#ffd700" },
-	{ weight: 35, color: "#0080ff" },
-	{ weight: 25, color: "#ff0000" },
-	{ weight: 10, color: "#ffffff" },
-	{ weight: 5, color: "#008000" },
-	{ weight: 2.5, color: "#800080" },
-	{ weight: 1.25, color: "#ffffff" },
-	{ weight: 0.5, color: "#ffffff" }
+	{ weight: 45,   color: "#e8c800", textColor: "#000" },
+	{ weight: 35,   color: "#1a52cc", textColor: "#fff" },
+	{ weight: 25,   color: "#cc0000", textColor: "#fff" },
+	{ weight: 10,   color: "#f0f0f0", textColor: "#000" },
+	{ weight: 5,    color: "#1a7a1a", textColor: "#fff" },
+	{ weight: 2.5,  color: "#800080", textColor: "#fff" },
+	{ weight: 1.25, color: "#f0f0f0", textColor: "#000" },
+	{ weight: 0.5,  color: "#f0f0f0", textColor: "#000" }
 ];
 
 // app state
@@ -41,7 +41,7 @@ const emptyState = document.getElementById("emptyState");
 const totalDisplay = document.getElementById("totalDisplay");
 const perSideDisplay = document.getElementById("perSide");
 const plateList = document.getElementById("plateList");
-const platesVisual = document.getElementById("platesVisual");
+const plateVisualizer = document.getElementById("plateVisualizer");
 const toast = document.getElementById("toast");
 const barBtns = document.querySelectorAll(".bar-btn");
 const customBarWrap = document.querySelector(".custom-bar-wrap");
@@ -146,6 +146,7 @@ function renderResults(counts, total, totalPerSide, loadedPerSide, remaining) {
 			const swatch = document.createElement("div");
 			swatch.className = "plate-swatch";
 			swatch.style.background = p.color;
+			swatch.style.color = p.textColor || "#000";
 			swatch.textContent = p.weight;
 
 			const info = document.createElement("div");
@@ -175,12 +176,12 @@ function renderResults(counts, total, totalPerSide, loadedPerSide, remaining) {
 		plateList.appendChild(row);
 	}
 
-	renderBarbellVisual(counts);
+	renderPlateVisualizer(counts);
 }
 
-// render the visual barbell
-function renderBarbellVisual(counts) {
-	platesVisual.innerHTML = "";
+// render 3d eleiko plate visualizer
+function renderPlateVisualizer(counts) {
+	plateVisualizer.innerHTML = "";
 
 	const plates = state.unit === "kg" ? PLATES_KG : PLATES_LBS;
 	const sidePlates = [];
@@ -188,44 +189,68 @@ function renderBarbellVisual(counts) {
 	for (const p of plates) {
 		const count = counts[p.weight] || 0;
 		for (let i = 0; i < count; i++) {
-			sidePlates.push(p.weight);
+			sidePlates.push(p);
 		}
 	}
 
-	// sort largest first so they sit closest to the center
-	sidePlates.sort((a, b) => b - a);
+	// largest first (closest to sleeve collar)
+	sidePlates.sort((a, b) => b.weight - a.weight);
 
-	// left side plates
-	sidePlates.forEach((weight, i) => {
-		const plate = document.createElement("div");
-		plate.className = "plate-on-bar " + plateSizeClass(weight);
-		plate.style.background = getPlateColor(weight);
-		plate.style.left = (14 + i * 30) + "px";
-		plate.textContent = weight;
-		platesVisual.appendChild(plate);
+	sidePlates.forEach((p) => {
+		const el = document.createElement("div");
+		el.className = "plate-3d";
+
+		// scale height by weight relative to 25kg
+		const maxH = 110;
+		const minH = 30;
+		const maxW = 25;
+		const fraction = Math.min(p.weight / maxW, 1);
+		const h = minH + fraction * (maxH - minH);
+		const w = 18 + fraction * 10;
+
+		el.style.height = h + "px";
+		el.style.width = w + "px";
+		el.style.background = p.color;
+		el.style.border = "2px solid rgba(255,255,255,0.15)";
+		el.style.borderRadius = "3px";
+		el.style.position = "relative";
+		el.style.flexShrink = "0";
+		el.style.display = "flex";
+		el.style.alignItems = "center";
+		el.style.justifyContent = "center";
+
+		// 3d side face illusion
+		const sideEl = document.createElement("div");
+		sideEl.style.cssText = `
+			position: absolute;
+			right: -6px;
+			top: 3px;
+			bottom: 3px;
+			width: 6px;
+			background: color-mix(in srgb, ${p.color} 60%, #000);
+			clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%);
+			border-radius: 0 2px 2px 0;
+		`;
+		el.appendChild(sideEl);
+
+		// label
+		const label = document.createElement("span");
+		label.style.cssText = `
+			font-size: 0.6rem;
+			font-weight: 900;
+			color: ${p.textColor || "#000"};
+			writing-mode: vertical-lr;
+			text-orientation: mixed;
+			transform: rotate(180deg);
+			letter-spacing: 0.5px;
+			pointer-events: none;
+			z-index: 1;
+		`;
+		label.textContent = p.weight;
+		el.appendChild(label);
+
+		plateVisualizer.appendChild(el);
 	});
-
-	// right side plates (mirrored)
-	sidePlates.forEach((weight, i) => {
-		const plate = document.createElement("div");
-		plate.className = "plate-on-bar " + plateSizeClass(weight);
-		plate.style.background = getPlateColor(weight);
-		plate.style.right = (14 + i * 30) + "px";
-		plate.textContent = weight;
-		platesVisual.appendChild(plate);
-	});
-}
-
-function plateSizeClass(weight) {
-	if (weight >= 20) return "large";
-	if (weight >= 10) return "medium";
-	return "";
-}
-
-function getPlateColor(weight) {
-	const plates = state.unit === "kg" ? PLATES_KG : PLATES_LBS;
-	const p = plates.find((x) => x.weight === weight);
-	return p ? p.color : "#888";
 }
 
 function showToast(msg) {
