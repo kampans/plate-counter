@@ -35,7 +35,7 @@ function render() {
   animateTotal(total);
   document.getElementById("total-announcement").textContent = `Total weight: ${formatWeight(total)} kilograms`;
   perSideDisplay.textContent = `${formatWeight(perSide)} kg`;
-  document.querySelectorAll(".plate-choice").forEach((choice) => { const count = history.filter(item => item === Number(choice.dataset.weight)).length; choice.querySelector(".plate-count").textContent = `${count} per side`; });
+  document.querySelectorAll(".plate-choice").forEach((choice) => { const count = history.filter(item => item === Number(choice.dataset.weight)).length; const el = choice.querySelector(".plate-count"); el.textContent = count > 0 ? `${count} per side` : ""; });
   undo.disabled = clear.disabled = history.length === 0;
 }
 document.getElementById("bar-weight").textContent = `${formatWeight(config.barWeight)} kg`;
