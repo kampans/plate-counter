@@ -171,13 +171,13 @@ select {
 .plate-swatch {
 	width: 34px;
 	height: 34px;
+	border-radius: 50%;
 	border: 2px solid rgba(255, 255, 255, 0.2);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-size: 0.75rem;
 	font-weight: 800;
-	color: #000;
 	flex-shrink: 0;
 }
 
@@ -201,82 +201,14 @@ select {
 	font-size: 1.1rem;
 }
 
-.barbell-visual {
-	margin-top: 20px;
+.plate-visualizer {
+	margin-top: 24px;
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 10px;
-}
-
-.bar {
-	height: 14px;
-	background: #444;
-	border: 2px solid var(--border);
-	width: 100%;
-	max-width: 260px;
-	position: relative;
-}
-
-.bar-fill {
-	height: 100%;
-	background: #777;
-	width: 100%;
-	position: relative;
-	z-index: 1;
-}
-
-.plates-on-bar {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	left: 0;
-	right: 0;
-	display: flex;
-	justify-content: space-between;
-	padding: 0 14px;
-	pointer-events: none;
-	z-index: 2;
-}
-
-.plate-on-bar {
-	width: 26px;
-	height: 26px;
-	border: 2px solid rgba(0, 0, 0, 0.35);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 0.65rem;
-	font-weight: 800;
-	color: #000;
-}
-
-.plate-on-bar.large {
-	width: 34px;
-	height: 34px;
-	font-size: 0.7rem;
-}
-
-.plate-on-bar.medium {
-	width: 30px;
-	height: 30px;
-	font-size: 0.68rem;
-}
-
-.side-label {
-	position: absolute;
-	top: -24px;
-	font-size: 0.75rem;
-	color: var(--muted);
-	font-weight: 700;
-}
-
-.side-label.left {
-	left: 0;
-}
-
-.side-label.right {
-	right: 0;
+	align-items: flex-end;
+	gap: 2px;
+	min-height: 120px;
+	overflow-x: auto;
+	padding-bottom: 8px;
 }
 
 .empty-state {
