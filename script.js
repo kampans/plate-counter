@@ -1,16 +1,16 @@
 // plate counter logic
 
-// plate definitions (kg)
+// plate definitions (kg) - calibrated colors
 const PLATES_KG = [
-	{ weight: 25, color: "#ffd700" },
-	{ weight: 20, color: "#000000" },
-	{ weight: 15, color: "#0080ff" },
-	{ weight: 10, color: "#ff0000" },
-	{ weight: 5, color: "#ffffff" },
-	{ weight: 2.5, color: "#008000" },
-	{ weight: 1.25, color: "#800080" },
+	{ weight: 25, color: "#ff0000" }, // red
+	{ weight: 20, color: "#0080ff" }, // blue
+	{ weight: 15, color: "#ffd700" }, // yellow
+	{ weight: 10, color: "#008000" }, // green
+	{ weight: 5, color: "#ffffff" },  // white
+	{ weight: 2.5, color: "#000000" }, // black
+	{ weight: 1.25, color: "#808080" }, // grey
 	{ weight: 0.5, color: "#ffffff" },
-	{ weight: 0.25, color: "#ffffff" }
+	{ weight: 0.25, color: "#808080" }
 ];
 
 // plate definitions (lbs)
