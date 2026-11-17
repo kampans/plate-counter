@@ -201,16 +201,6 @@ select {
 	font-size: 1.1rem;
 }
 
-.plate-visualizer {
-	margin-top: 24px;
-	display: flex;
-	align-items: flex-end;
-	gap: 2px;
-	min-height: 120px;
-	overflow-x: auto;
-	padding-bottom: 8px;
-}
-
 .empty-state {
 	text-align: center;
 	color: var(--muted);
@@ -256,9 +246,5 @@ select {
 
 	.card {
 		padding: 16px;
-	}
-
-	.bar {
-		max-width: 220px;
 	}
 }

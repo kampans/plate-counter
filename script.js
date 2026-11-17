@@ -41,7 +41,6 @@ const emptyState = document.getElementById("emptyState");
 const totalDisplay = document.getElementById("totalDisplay");
 const perSideDisplay = document.getElementById("perSide");
 const plateList = document.getElementById("plateList");
-const plateVisualizer = document.getElementById("plateVisualizer");
 const toast = document.getElementById("toast");
 const barBtns = document.querySelectorAll(".bar-btn");
 const customBarWrap = document.querySelector(".custom-bar-wrap");
@@ -122,7 +121,6 @@ function calculate() {
 
 	renderResults(counts, total, totalPerSide, loadedPerSide, remaining);
 }
-
 // render results to the dom
 function renderResults(counts, total, totalPerSide, loadedPerSide, remaining) {
 	emptyState.style.display = "none";
@@ -176,81 +174,6 @@ function renderResults(counts, total, totalPerSide, loadedPerSide, remaining) {
 		plateList.appendChild(row);
 	}
 
-	renderPlateVisualizer(counts);
-}
-
-// render 3d eleiko plate visualizer
-function renderPlateVisualizer(counts) {
-	plateVisualizer.innerHTML = "";
-
-	const plates = state.unit === "kg" ? PLATES_KG : PLATES_LBS;
-	const sidePlates = [];
-
-	for (const p of plates) {
-		const count = counts[p.weight] || 0;
-		for (let i = 0; i < count; i++) {
-			sidePlates.push(p);
-		}
-	}
-
-	// largest first (closest to sleeve collar)
-	sidePlates.sort((a, b) => b.weight - a.weight);
-
-	sidePlates.forEach((p) => {
-		const el = document.createElement("div");
-		el.className = "plate-3d";
-
-		// scale height by weight relative to 25kg
-		const maxH = 110;
-		const minH = 30;
-		const maxW = 25;
-		const fraction = Math.min(p.weight / maxW, 1);
-		const h = minH + fraction * (maxH - minH);
-		const w = 18 + fraction * 10;
-
-		el.style.height = h + "px";
-		el.style.width = w + "px";
-		el.style.background = p.color;
-		el.style.border = "2px solid rgba(255,255,255,0.15)";
-		el.style.borderRadius = "3px";
-		el.style.position = "relative";
-		el.style.flexShrink = "0";
-		el.style.display = "flex";
-		el.style.alignItems = "center";
-		el.style.justifyContent = "center";
-
-		// 3d side face illusion
-		const sideEl = document.createElement("div");
-		sideEl.style.cssText = `
-			position: absolute;
-			right: -6px;
-			top: 3px;
-			bottom: 3px;
-			width: 6px;
-			background: color-mix(in srgb, ${p.color} 60%, #000);
-			clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%);
-			border-radius: 0 2px 2px 0;
-		`;
-		el.appendChild(sideEl);
-
-		// label
-		const label = document.createElement("span");
-		label.style.cssText = `
-			font-size: 0.6rem;
-			font-weight: 900;
-			color: ${p.textColor || "#000"};
-			writing-mode: vertical-lr;
-			text-orientation: mixed;
-			transform: rotate(180deg);
-			letter-spacing: 0.5px;
-			pointer-events: none;
-			z-index: 1;
-		`;
-		label.textContent = p.weight;
-		el.appendChild(label);
-
-		plateVisualizer.appendChild(el);
-	});
 }
 
 function showToast(msg) {
