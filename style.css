@@ -23,29 +23,12 @@ body {
 	padding: 16px;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-start;
 }
 
 .container {
 	width: 100%;
 	max-width: 420px;
-}
-
-header {
-	text-align: center;
-	margin-bottom: 24px;
-}
-
-header h1 {
-	font-size: 1.75rem;
-	font-weight: 800;
-	letter-spacing: -0.5px;
-	margin-bottom: 4px;
-}
-
-header p {
-	color: var(--muted);
-	font-size: 0.9rem;
 }
 
 .card {
