@@ -15,11 +15,13 @@
     </header>
     <div class="app-layout">
     <div class="workspace">
-      <section class="visual" aria-label="Barbell visualization">
-
-        <div class="scene-wrap">
-          <div id="barbell-scene"></div>
-          <p id="scene-error" hidden>3D visualization could not be loaded. The counter still works.</p>
+      <section class="visual" aria-label="Barbell viewed from one side">
+        <div class="barbell-view">
+          <div class="barbell" aria-hidden="true">
+            <div class="barbell-shaft"></div>
+            <div class="barbell-shoulder"></div>
+            <div class="barbell-sleeve"><div id="plate-stack"></div></div>
+          </div>
         </div>
       </section>
       <section class="counter" aria-label="Barbell weight">
@@ -50,10 +52,6 @@
     <footer><span>PLATE COUNTER</span><span>LOADED ON BOTH SIDES</span></footer>
   </main>
   <script src="config.js"></script>
-  <script type="importmap">
-    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/examples/jsm/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
-  </script>
-  <script type="module" src="scene.js"></script>
   <script src="script.js"></script>
   <script src="warmup.js"></script>
 </body>

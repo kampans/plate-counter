@@ -1,5 +1,5 @@
 ﻿# Plate counter
 
-Serve this folder with a local web server and open it in a browser (for example, `python -m http.server`). The Three.js module is loaded from a CDN and requires an internet connection. The counter remains usable if the 3D scene cannot load.
+Serve this folder with a local web server and open it in a browser (for example, `python -m http.server`).
 
-Edit `config.js` to change the bar weight or plate colors. The scene exposes `window.addPlate(weight)` and `window.removePlate()`: each call adds or removes one mirrored pair, with removal in last-in, first-out order.
+Edit `config.js` to change the bar weight, plate colors, or profile dimensions in millimeters. The view shows one sleeve. Each selection adds a matching pair to the total.
