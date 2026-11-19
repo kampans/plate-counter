@@ -36,24 +36,29 @@
         <div class="actions"><button id="undo" type="button" disabled>Undo</button><button id="clear" type="button" disabled>Clear all</button></div>
       </section>
     </div>
-    <section class="warmup" aria-labelledby="warmup-title">
-      <div class="warmup-heading"><h2 id="warmup-title">Warm-up calculator</h2><p>Build up to your top set without doing too much.</p></div>
-      <form id="warmup-form">
-        <div class="warmup-inputs">
-          <label for="top-weight">Top-set weight <span>kg</span><input id="top-weight" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 122.5" required></label>
-          <label for="top-reps">Top-set reps<input id="top-reps" type="number" min="1" step="1" inputmode="numeric" value="1" required></label>
-        </div>
-        <button type="submit" class="warmup-submit">Calculate warm-up</button>
-      </form>
-      <div id="warmup-result" aria-live="polite"></div>
-      <p class="warmup-note">Keep warm-up sets easy. Rest as needed, especially before your top set.</p>
-    </section>
+    <aside class="calculators" aria-label="Lifting calculators">
+      <section class="calculator" aria-labelledby="one-rm-title">
+        <h2 id="one-rm-title">1RM calculator</h2>
+        <form id="one-rm-form" class="calculator-inputs">
+          <label>Weight (kg)<input name="weight" type="number" min="0" step="any" inputmode="decimal" required></label>
+          <label>Reps<input name="reps" type="number" min="1" max="10" step="1" inputmode="numeric" required></label>
+          <label class="calculator-wide">Formula
+            <select name="formula">
+              <option value="epley">Epley</option>
+              <option value="brzycki">Brzycki</option>
+            </select>
+          </label>
+        </form>
+        <p class="calculator-note">Enter the weight and reps from a hard set of 1?10 reps.</p>
+        <output id="one-rm-result" class="calculator-result" aria-live="polite"></output>
+      </section>
+    </aside>
     </div>
     <footer><span>PLATE COUNTER</span><span>LOADED ON BOTH SIDES</span></footer>
   </main>
   <script src="config.js"></script>
   <script src="script.js"></script>
-  <script src="warmup.js"></script>
+  <script src="one-rm.js"></script>
 </body>
 </html>
 
