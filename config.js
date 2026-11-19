@@ -9,5 +9,6 @@ window.PLATE_COUNTER_CONFIG = {
     { weight: 5, color: "#e6e5de", textColor: "#191b16", diameter: 260, thickness: 22 },
     { weight: 2.5, color: "#292b29", textColor: "#fff", diameter: 200, thickness: 22 },
     { weight: 1.25, color: "#a9aca8", textColor: "#191b16", diameter: 160, thickness: 12 }
-  ]
+  ],
+  collar: { weight: 2.5, diameter: 90, thickness: 42 }
 };
