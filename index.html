@@ -52,6 +52,32 @@
         <p class="calculator-note">Enter the weight and reps from a hard set of 1?10 reps.</p>
         <output id="one-rm-result" class="calculator-result" aria-live="polite"></output>
       </section>
+      <section class="calculator" aria-labelledby="scores-title">
+        <h2 id="scores-title">DOTS &amp; IPF GL Points</h2>
+        <form id="score-form" class="calculator-inputs">
+          <label>Bodyweight (kg)<input name="bodyweight" type="number" min="0" step="any" inputmode="decimal" required></label>
+          <label><span id="lift-result-label">Total (kg)</span><input name="liftResult" type="number" min="0" step="any" inputmode="decimal" required></label>
+          <label>Division
+            <select name="division">
+              <option value="men">Men</option>
+              <option value="women">Women</option>
+            </select>
+          </label>
+          <label>Equipment
+            <select name="equipment">
+              <option value="classic">Classic (raw)</option>
+              <option value="equipped">Equipped</option>
+            </select>
+          </label>
+          <label class="calculator-wide">Event
+            <select name="eventType">
+              <option value="full">Full powerlifting</option>
+              <option value="bench">Bench press only</option>
+            </select>
+          </label>
+        </form>
+        <output id="score-result" class="calculator-result" aria-live="polite"></output>
+      </section>
     </aside>
     </div>
     <footer><span>PLATE COUNTER</span><span>LOADED ON BOTH SIDES</span></footer>
@@ -59,6 +85,7 @@
   <script src="config.js"></script>
   <script src="script.js"></script>
   <script src="one-rm.js"></script>
+  <script src="scores.js"></script>
 </body>
 </html>
 
