@@ -16,22 +16,24 @@ h1 { margin: 0; font-size: .95rem; font-weight: 750; letter-spacing: -.02em; }
 .visual-heading span:last-child { color: #7a7a7a; }
 .barbell-view { overflow-x: auto; }
 .barbell {
-  --plate-scale: .36px;
+  --plate-scale: .42px;
+  --sleeve-length: calc(415 * var(--plate-scale));
   display: flex;
   align-items: center;
   width: max-content;
-  min-width: 100%;
+  margin-inline: auto;
   height: clamp(210px, 57vw, 310px);
-  padding-right: 20px;
 }
-.barbell-shaft { flex: 0 0 clamp(55px, 15vw, 105px); height: 10px; background: #888d93; }
+.barbell-shaft { flex: 0 0 auto; width: clamp(55px, 15vw, 105px); height: calc(29 * var(--plate-scale)); background: #888d93; }
 .barbell-shoulder { flex: 0 0 12px; height: 28px; background: #b0b4b9; }
-.barbell-sleeve { position: relative; flex: 1; padding-right: 36px; }
+.barbell-sleeve { position: relative; min-width: var(--sleeve-length); }
 .barbell-sleeve::before {
   content: "";
   position: absolute;
-  inset: 50% 0 auto;
-  height: 18px;
+  top: 50%;
+  left: 0;
+  width: var(--sleeve-length);
+  height: calc(50 * var(--plate-scale));
   transform: translateY(-50%);
   background: #a4a8ad;
 }
@@ -74,7 +76,7 @@ footer { display: flex; justify-content: space-between; border-top: 1px solid #3
   main { width: min(100% - 64px, 1000px); }
   .workspace { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(270px, 1fr); gap: 20px; align-items: stretch; padding-top: 35px; }
   .visual { min-width: 0; }
-  .barbell { --plate-scale: .46px; height: 300px; }
+  .barbell { --plate-scale: .52px; height: 300px; }
   .counter { display: flex; flex-direction: column; justify-content: space-between; padding: 25px; }
   .total { margin: 20px 0; font-size: clamp(4rem, 8vw, 6rem); }
   .controls { grid-column: 1 / -1; padding: 20px 0 32px; }
