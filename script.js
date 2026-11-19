@@ -5,32 +5,13 @@ const perSideDisplay = document.getElementById("per-side");
 const plateStack = document.getElementById("plate-stack");
 const undo = document.getElementById("undo");
 const clear = document.getElementById("clear");
-let displayedTotal = config.barWeight;
-let animationFrame;
-
 function formatWeight(weight) { return Number(weight.toFixed(2)).toString(); }
-function animateTotal(target) {
-  cancelAnimationFrame(animationFrame);
-  const start = displayedTotal;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    displayedTotal = target;
-    totalDisplay.textContent = formatWeight(target);
-    return;
-  }
-  const startTime = performance.now();
-  function tick(now) {
-    const progress = Math.min((now - startTime) / 350, 1);
-    displayedTotal = start + (target - start) * (1 - Math.pow(1 - progress, 3));
-    totalDisplay.textContent = formatWeight(displayedTotal);
-    if (progress < 1) animationFrame = requestAnimationFrame(tick);
-  }
-  animationFrame = requestAnimationFrame(tick);
-}
+
 function render() {
   const perSide = history.reduce((sum, plate) => sum + plate.weight, 0);
-  const total = config.barWeight + perSide * 2;
-  animateTotal(total);
-  document.getElementById("total-announcement").textContent = `Total weight: ${formatWeight(total)} kilograms`;
+  const total = formatWeight(config.barWeight + perSide * 2);
+  totalDisplay.textContent = total;
+  document.getElementById("total-announcement").textContent = `Total weight: ${total} kilograms`;
   perSideDisplay.textContent = `${formatWeight(perSide)} kg`;
   plateStack.replaceChildren(...history.map(plate => {
     const profile = document.createElement("span");
