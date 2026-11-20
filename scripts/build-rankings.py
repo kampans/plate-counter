@@ -179,6 +179,7 @@ def build(source, settings, output, dedupe, now):
             lifter_index = len(lifters)
             lifters.append({
                 "name": entry["Name"],
+                "bodyweight": number(entry["BodyweightKg"]),
                 "squat": number(entry["Best3SquatKg"]),
                 "bench": number(entry["Best3BenchKg"]),
                 "deadlift": number(entry["Best3DeadliftKg"]),

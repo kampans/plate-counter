@@ -137,9 +137,9 @@ function rankMetric(name, score, distribution, lifterIndexes, category, submitte
 
   const table = document.createElement("table");
   table.className = "rank-neighbors";
-  table.createCaption().textContent = `Nearby ${name} rankings (lifts in kg)`;
+  table.createCaption().textContent = `Nearby ${name} rankings (weights in kg)`;
   const header = table.createTHead().insertRow();
-  for (const label of ["Rank", "Lifter", "Squat", "Bench", "Deadlift", "Total", name]) {
+  for (const label of ["Rank", "Lifter", "Bodyweight", "Squat", "Bench", "Deadlift", "Total", name]) {
     const cell = document.createElement("th");
     cell.scope = "col";
     cell.textContent = label;
@@ -152,8 +152,8 @@ function rankMetric(name, score, distribution, lifterIndexes, category, submitte
     const lifter = row.isUser ? submitted : rankData.lifters?.[lifterIndexes?.[row.index]];
     entry.insertCell().textContent = `#${row.rank}`;
     entry.insertCell().textContent = lifter?.name ?? "Lifter";
-    for (const lift of ["squat", "bench", "deadlift", "total"]) {
-      entry.insertCell().textContent = lifter?.[lift] ?? "—";
+    for (const field of ["bodyweight", "squat", "bench", "deadlift", "total"]) {
+      entry.insertCell().textContent = lifter?.[field] ?? "—";
     }
     entry.insertCell().textContent = (row.score / 100).toFixed(2);
   }
@@ -195,6 +195,7 @@ function showRanking() {
   const label = metric === "gl" ? "IPF GL Points" : "DOTS";
   const submitted = {
     name: "You",
+    bodyweight: bodyweight.valueAsNumber,
     squat: squat.valueAsNumber,
     bench: bench.valueAsNumber,
     deadlift: deadlift.valueAsNumber,
