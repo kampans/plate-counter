@@ -137,9 +137,10 @@ footer { display: flex; justify-content: space-between; border-top: 1px solid #3
 #score-result { min-height: 4lh; }
 
 .ranking-page { width: min(100%, 620px); margin-inline: auto; padding: 28px 0 32px; }
-.rank-age-options { display: grid; gap: 10px; }
+.rank-age-options { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 135px); align-items: end; gap: 10px; }
 .rank-age-options[hidden] { display: none; }
 .rank-age-options .comp-load { display: flex; }
+.rank-age-options .comp-load input { flex: none; }
 .rank-lifts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 135px), 1fr)); gap: 10px; margin: 0; padding: 0; border: 0; min-width: 0; }
 .rank-lifts legend { padding: 0; margin: 6px 0 8px; font-size: .85rem; font-weight: 700; }
 .rank-live-total { font-weight: 700; font-variant-numeric: tabular-nums; }
