@@ -92,6 +92,7 @@
       <nav class="footer-pages" aria-label="Site information">
         <a href="privacy.html">Privacy</a>
         <a href="about.html">About</a>
+        <button id="install-app" class="footer-install" type="button" hidden>Install</button>
       </nav>
       <div class="footer-credit">
         <span>Built by Nicolas</span>
@@ -108,7 +109,14 @@
         </nav>
       </div>
     </footer>
+    <dialog id="install-help" class="site-dialog" aria-labelledby="install-help-title">
+      <h2 id="install-help-title">Install or create a shortcut</h2>
+      <p>On desktop Chrome, open the three-dot menu, choose <strong>Cast, save, and share</strong>, then select <strong>Install page as app</strong> or <strong>Create shortcut</strong>.</p>
+      <p>On Android, open the Chrome menu and choose <strong>Add to Home screen</strong>.</p>
+      <form method="dialog"><button type="submit" autofocus>Done</button></form>
+    </dialog>
   </main>
+  <script src="src/install.js"></script>
   <script src="config/plates.js"></script>
   <script src="src/counter.js"></script>
   <script src="src/calculators/one-rm.js"></script>
