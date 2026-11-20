@@ -207,3 +207,4 @@ function showRanking() {
 
 updateRankForm();
 startRanking();
+document.getElementById("rank-reminder").showModal();
