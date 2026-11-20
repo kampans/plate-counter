@@ -150,7 +150,6 @@ footer { display: flex; justify-content: space-between; border-top: 1px solid #3
 .rank-results { margin-top: 20px; }
 .rank-results h3 { margin: 0 0 8px; }
 .rank-results p { margin: 8px 0; }
-.rank-results section + section { margin-top: 20px; }
 .rank-neighbors { width: 100%; border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
 .rank-neighbors caption { margin: 8px 0; text-align: left; font-weight: 700; }
 .rank-neighbors :is(th, td) { padding: 8px 10px; border-bottom: 1px solid #3a3a3a; text-align: left; }

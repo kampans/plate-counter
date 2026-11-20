@@ -1,6 +1,6 @@
 ﻿const rankForm = document.getElementById("rank-form");
 const {
-  federation, sex, age, bodyweight, equipment, category: ageGroup, allAges, squat, bench, deadlift
+  federation, sex, age, bodyweight, equipment, scoring, category: ageGroup, allAges, squat, bench, deadlift
 } = rankForm.elements;
 const rankSubmit = document.getElementById("rank-submit");
 const rankTotal = document.getElementById("rank-total");
@@ -52,6 +52,10 @@ function totalLifts() {
 }
 
 function updateRankForm() {
+  const glOption = scoring.querySelector('option[value="gl"]');
+  glOption.disabled = equipment.value !== "Raw";
+  if (glOption.disabled && scoring.value === "gl") scoring.value = "dots";
+
   const derived = ageToCategory(age.valueAsNumber);
   ageGroup.options[0].textContent = derived ? `Use entered age: ${ageLabel(derived)}` : "Use entered age";
   ageGroup.disabled = allAges.checked;
@@ -155,14 +159,19 @@ function rankMetric(name, score, distribution, category) {
 
 rankForm.addEventListener("input", event => {
   if (event.target === federation) return;
+  const refreshResults = event.target === scoring && rankResults.hasChildNodes();
   if (event.target === sex) updateEquipment();
   updateRankForm();
+  if (refreshResults && !rankSubmit.disabled) showRanking();
 });
 federation.addEventListener("change", loadFederation);
 rankForm.addEventListener("submit", event => {
   event.preventDefault();
   if (rankSubmit.disabled || !rankForm.checkValidity()) return;
+  showRanking();
+});
 
+function showRanking() {
   const total = totalLifts();
   const category = allAges.checked || !rankFederation.ageReliable ? "ALL" :
     ageGroup.value || ageToCategory(age.valueAsNumber);
@@ -172,12 +181,11 @@ rankForm.addEventListener("submit", event => {
   group.textContent = [sex.selectedOptions[0].textContent, equipment.value, ageLabel(category), rankFederation.label].join(", ");
   const resultTotal = document.createElement("p");
   resultTotal.textContent = `Total: ${total} kg`;
-  const dots = rankMetric("DOTS", scores.dots, cohort.dots, category);
-  const gl = scores.gl === null ? document.createElement("p") :
-    rankMetric("IPF GL", scores.gl, cohort.gl, category);
-  if (scores.gl === null) gl.textContent = "GL not available for this equipment.";
-  rankResults.replaceChildren(group, resultTotal, dots, gl);
-});
+  const metric = scoring.value;
+  const label = metric === "gl" ? "IPF GL Points" : "DOTS";
+  const ranking = rankMetric(label, scores[metric], cohort[metric], category);
+  rankResults.replaceChildren(group, resultTotal, ranking);
+}
 
 updateRankForm();
 startRanking();

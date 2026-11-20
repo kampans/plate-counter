@@ -21,7 +21,13 @@
         <label>Age<input name="age" type="number" inputmode="numeric" min="14" max="99" step="1" required aria-describedby="rank-age-help"></label>
         <label>Bodyweight (kg)<input name="bodyweight" type="number" inputmode="decimal" min="35" max="250" step="any" required></label>
         <p id="rank-age-help" class="calculator-note calculator-wide">Use the age you reach this calendar year (IPF counts age by calendar year).</p>
-        <label class="calculator-wide">Equipment<select name="equipment" required disabled><option value="">Select a federation</option></select></label>
+        <label>Equipment<select name="equipment" required disabled><option value="">Select a federation</option></select></label>
+        <label>Scoring
+          <select name="scoring">
+            <option value="dots">DOTS</option>
+            <option value="gl" disabled>IPF GL Points</option>
+          </select>
+        </label>
         <div id="rank-age-options" class="rank-age-options calculator-wide" hidden>
           <label>Age category<select name="category"><option value="">Use entered age</option></select></label>
           <label class="comp-load"><input name="allAges" type="checkbox"> Compare to all ages</label>
