@@ -86,9 +86,15 @@ async function loadFederation() {
 
   const { file, ageReliable } = rankFederation;
   try {
-    if (!rankFiles.has(file)) rankFiles.set(file, await rankJson(file));
+    if (!rankFiles.has(file)) {
+      rankFiles.set(file, rankJson(file).catch(error => {
+        rankFiles.delete(file);
+        throw error;
+      }));
+    }
+    const data = await rankFiles.get(file);
     if (request !== rankRequest) return;
-    rankData = rankFiles.get(file);
+    rankData = data;
     rankAgeOptions.hidden = !ageReliable;
     rankAgeCoverage.hidden = ageReliable;
     updateEquipment();
