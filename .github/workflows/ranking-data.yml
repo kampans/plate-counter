@@ -1,0 +1,31 @@
+name: refresh ranking data
+
+on:
+  schedule:
+    - cron: '23 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ranking-data-refresh
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: rebuild ranking data
+        run: |
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/openpowerlifting.zip" https://openpowerlifting.gitlab.io/opl-csv/files/openpowerlifting-latest.zip
+          python3 scripts/build-rankings.py "$RUNNER_TEMP/openpowerlifting.zip"
+          node --test tests/ranking.test.cjs
+      - name: commit refreshed data
+        run: |
+          git add -- data/rankings
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'refresh ranking data'
+          git push
