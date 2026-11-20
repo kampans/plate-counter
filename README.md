@@ -30,3 +30,9 @@ node --test tests/ranking.test.cjs
 ```
 
 The builder also accepts an extracted CSV and supports `--dedupe latest`. Edit `config/federations.json` to add candidates or adjust inclusion thresholds. The GitHub Actions workflow rebuilds and commits the data weekly when enabled on the repository.
+
+## License
+
+The application code is available under the [MIT License](LICENSE).
+
+The competition data in `data/rankings/` comes from the [OpenPowerlifting project](https://www.openpowerlifting.org) and is dedicated to the public domain by the project. [Data licensing and downloads](https://openpowerlifting.gitlab.io/opl-csv/)
