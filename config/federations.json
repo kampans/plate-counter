@@ -1,0 +1,11 @@
+{
+  "windowYears": 5,
+  "minUniqueLifters": 150,
+  "maxMonthsSinceLastMeet": 12,
+  "federations": [
+    { "id": "irishpf", "label": "IrishPF", "oplCodes": ["IrishPF"] },
+    { "id": "abs", "label": "ABS Series", "oplCodes": ["ABS", "Ireland-UA"], "meetNamePrefixByCode": { "Ireland-UA": "ABS" }, "defaultAllAges": true },
+    { "id": "irishpo", "label": "IrishPO", "oplCodes": ["IrishPO"] },
+    { "id": "wrpf-eire", "label": "WRPF Ireland", "oplCodes": ["WRPF-EIRE", "WRPF-Ireland"] }
+  ]
+}
