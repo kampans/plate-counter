@@ -2,7 +2,15 @@
 
 Serve this folder with a local web server and open it in a browser (for example, `python -m http.server`).
 
-Edit `config.js` to change the bar weight, plate colors, or profile dimensions in millimeters. The view shows one sleeve. Each selection adds a matching pair to the total.
+Edit `config/plates.js` to change the bar weight, plate colors, or profile dimensions in millimeters. The view shows one sleeve. Each selection adds a matching pair to the total.
+
+## Repository layout
+
+- `index.html` and `rank.html` are the static entry points.
+- `src/` holds the counter, calculators, ranking code, and shared score formulas.
+- `styles/main.css` is the shared stylesheet.
+- `config/` holds plate settings and the federation registry.
+- `data/rankings/` holds the generated leaderboard snapshots. The builder is in `scripts/`, and ranking tests are in `tests/`.
 
 ## Calculator formulas
 

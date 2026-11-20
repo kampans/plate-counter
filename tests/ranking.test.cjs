@@ -5,7 +5,7 @@ const { test } = require("node:test");
 const { createContext, runInContext } = require("node:vm");
 
 const context = createContext({});
-for (const file of ["score-formulas.js", "ranking-core.js"]) {
+for (const file of ["src/score-formulas.js", "src/ranking/core.js"]) {
   runInContext(readFileSync(join(__dirname, "..", file), "utf8"), context);
 }
 const { ageToCategory, rankingScores, rankIn, nearbyRankingRows } = context;
