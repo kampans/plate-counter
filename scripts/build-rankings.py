@@ -1,4 +1,4 @@
-"""Build anonymous ranking cohorts from an OpenPowerlifting CSV or ZIP."""
+"""Build ranking cohorts from an OpenPowerlifting CSV or ZIP."""
 import argparse
 from collections import Counter, defaultdict
 import csv
@@ -111,7 +111,10 @@ def build(source, settings, output, dedupe, now):
 
     with open_csv(source) as (stream, source_name):
         reader = csv.DictReader(stream)
-        required = set("Name Sex Event Equipment Age BirthYearClass BodyweightKg TotalKg Place Dots Goodlift Federation Date MeetName".split())
+        required = set(
+            "Name Sex Event Equipment Age BirthYearClass BodyweightKg TotalKg Place Dots Goodlift "
+            "Federation Date MeetName Best3SquatKg Best3BenchKg Best3DeadliftKg".split()
+        )
         if missing := required.difference(reader.fieldnames or ()):
             raise ValueError(f"Missing OpenPowerlifting columns: {', '.join(sorted(missing))}")
         for row in reader:
@@ -171,21 +174,33 @@ def build(source, settings, output, dedupe, now):
                 best[key] = (order, entry)
 
         cohorts = defaultdict(lambda: {"dots": [], "gl": []})
+        lifters = []
         for _, entry in best.values():
+            lifter_index = len(lifters)
+            lifters.append({
+                "name": entry["Name"],
+                "squat": number(entry["Best3SquatKg"]),
+                "bench": number(entry["Best3BenchKg"]),
+                "deadlift": number(entry["Best3DeadliftKg"]),
+                "total": number(entry["TotalKg"]),
+            })
             categories = ["ALL"] + ([entry["category"]] if entry["category"] else [])
             for age in categories:
                 cohort = cohorts[f"{entry['Sex']}|{entry['Equipment']}|{age}"]
-                cohort["dots"].append(score100(float(entry["Dots"])))
+                cohort["dots"].append((score100(float(entry["Dots"])), lifter_index))
                 goodlift = number(entry["Goodlift"])
                 if goodlift is not None:
-                    cohort["gl"].append(score100(goodlift))
+                    cohort["gl"].append((score100(goodlift), lifter_index))
         for cohort in cohorts.values():
-            for scores in cohort.values():
-                scores.sort()
+            for metric in ("dots", "gl"):
+                ordered = sorted(cohort[metric])
+                cohort[metric] = [score for score, _ in ordered]
+                cohort[f"{metric}Lifters"] = [index for _, index in ordered]
 
         base = {"id": fed["id"], "label": fed["label"], "builtAt": manifest["builtAt"], "uniqueLifters": unique}
         data = dict(base, window={"since": since}, dedupe=f"{dedupe}-per-lifter-per-equipment",
-                    lastMeet=latest, coverage={"ageCategory": coverage}, equipment=sorted(equipment), cohorts=cohorts)
+                    lastMeet=latest, coverage={"ageCategory": coverage}, equipment=sorted(equipment),
+                    cohorts=cohorts, lifters=lifters)
         filename = f"{fed['id']}.json"
         content = json.dumps(data, separators=(",", ":")).encode()
         if len(gzip.compress(content)) > 1_000_000:
