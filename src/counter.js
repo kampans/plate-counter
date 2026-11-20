@@ -48,7 +48,12 @@ function resetTarget() {
 }
 
 function render() {
-  const perSide = history.reduce((sum, plate) => sum + plate.weight, 0);
+  const counts = new Map();
+  let perSide = 0;
+  for (const plate of history) {
+    perSide += plate.weight;
+    counts.set(plate, (counts.get(plate) ?? 0) + 1);
+  }
   const total = formatWeight(config.barWeight + perSide * 2);
   totalDisplay.textContent = total;
   document.getElementById("total-announcement").textContent = `Total weight: ${total} kilograms`;
@@ -64,7 +69,7 @@ function render() {
     return profile;
   }));
   choices.forEach(({ item, countLabel }) => {
-    const count = history.filter(loaded => loaded === item).length;
+    const count = counts.get(item) ?? 0;
     countLabel.textContent = count > 0 ? `${count} per side` : "";
   });
   undo.disabled = clear.disabled = history.length === 0;
