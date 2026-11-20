@@ -1,0 +1,52 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171717">
+  <title>Rank | Plate counter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header class="header">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"><span></span></span><h1>Plate counter</h1></div>
+      <nav class="site-tabs" aria-label="Pages"><a href="index.html">Counter</a><a href="rank.html" aria-current="page">Rank</a></nav>
+    </header>
+    <section class="ranking-page" aria-labelledby="rank-title">
+      <h2 id="rank-title">Rank</h2>
+      <form id="rank-form" class="calculator-inputs" novalidate>
+        <label>Federation<select name="federation" required disabled><option value="">Loading federations…</option></select></label>
+        <label>Sex<select name="sex" required><option value="">Select sex</option><option value="M">Men</option><option value="F">Women</option></select></label>
+        <label>Age<input name="age" type="number" inputmode="numeric" min="14" max="99" step="1" required aria-describedby="rank-age-help"></label>
+        <label>Bodyweight (kg)<input name="bodyweight" type="number" inputmode="decimal" min="35" max="250" step="any" required></label>
+        <p id="rank-age-help" class="calculator-note calculator-wide">Use the age you reach this calendar year (IPF counts age by calendar year).</p>
+        <label class="calculator-wide">Equipment<select name="equipment" required disabled><option value="">Select a federation</option></select></label>
+        <div id="rank-age-options" class="rank-age-options calculator-wide" hidden>
+          <label>Age category<select name="category"><option value="">Use entered age</option></select></label>
+          <label class="comp-load"><input name="allAges" type="checkbox"> Compare to all ages</label>
+        </div>
+        <p id="rank-age-coverage" class="calculator-note calculator-wide" hidden>This federation has limited age data. Ranking compares all ages.</p>
+        <fieldset class="rank-lifts calculator-wide">
+          <legend>Best successful lifts (kg)</legend>
+          <label>Squat<input name="squat" type="number" inputmode="decimal" min="0.5" max="600" step="0.5" required></label>
+          <label>Bench press<input name="bench" type="number" inputmode="decimal" min="0.5" max="450" step="0.5" required></label>
+          <label>Deadlift<input name="deadlift" type="number" inputmode="decimal" min="0.5" max="500" step="0.5" required></label>
+        </fieldset>
+        <output id="rank-total" class="rank-live-total calculator-wide">Total: 0 kg</output>
+        <p id="rank-status" class="rank-status calculator-note calculator-wide" role="status"></p>
+        <button id="rank-submit" class="rank-submit calculator-wide" type="submit" disabled>Rank</button>
+      </form>
+      <div id="rank-results" class="rank-results" aria-live="polite"></div>
+      <p id="rank-data-date" class="calculator-note"></p>
+      <p class="calculator-note">Rankings cover recorded meet results and use one result per lifter per equipment. If you have competed in this federation, your result may already be included.</p>
+      <p class="calculator-note rank-attribution">This page uses data from the <a href="https://www.openpowerlifting.org">OpenPowerlifting project</a>. You may <a href="https://gitlab.com/openpowerlifting/opl-data">download a copy of the data</a>.</p>
+    </section>
+    <footer><span>PLATE COUNTER</span></footer>
+  </main>
+  <script src="config.js"></script>
+  <script src="score-formulas.js"></script>
+  <script src="ranking-core.js"></script>
+  <script src="ranking-ui.js"></script>
+</body>
+</html>

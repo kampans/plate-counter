@@ -5,6 +5,10 @@ html { scrollbar-gutter: stable; }
 body { margin: 0; min-height: 100dvh; -webkit-tap-highlight-color: transparent; }
 main { width: min(100% - 32px, 1000px); margin: 0 auto; }
 .header { min-height: 68px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #3a3a3a; }
+.site-tabs { display: flex; gap: 4px; }
+.site-tabs a { padding: 12px; border-radius: 6px; color: #c6c6c6; font-size: .85rem; font-weight: 700; text-decoration: none; }
+.site-tabs a:is(:hover, [aria-current="page"]) { color: #fff; background: #2b2b2b; }
+.site-tabs a:focus-visible { outline: 3px solid #f2f2f2; outline-offset: 2px; }
 .brand { display: flex; align-items: center; gap: 10px; }
 .brand-mark { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid #929292; border-radius: 50%; }
 .brand-mark span { width: 13px; height: 11px; border-left: 3px solid #e8e8e8; border-right: 3px solid #e8e8e8; position: relative; }
@@ -131,6 +135,21 @@ footer { display: flex; justify-content: space-between; border-top: 1px solid #3
 .calculator-note { margin: 12px 0 0; color: #b3b3b3; font-size: .82rem; line-height: 1.5; }
 .calculator-result { display: block; margin-top: 12px; min-height: 1lh; line-height: 1.5; font-weight: 700; font-variant-numeric: tabular-nums; }
 #score-result { min-height: 4lh; }
+
+.ranking-page { width: min(100%, 620px); margin-inline: auto; padding: 28px 0 32px; }
+.rank-age-options { display: grid; gap: 10px; }
+.rank-age-options[hidden] { display: none; }
+.rank-age-options .comp-load { display: flex; }
+.rank-lifts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 135px), 1fr)); gap: 10px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.rank-lifts legend { padding: 0; margin: 6px 0 8px; font-size: .85rem; font-weight: 700; }
+.rank-live-total { font-weight: 700; font-variant-numeric: tabular-nums; }
+.rank-status { min-height: 2lh; margin: 0; }
+.rank-submit { min-height: 48px; border: 1px solid transparent; border-radius: 6px; color: #fff; background: var(--rank-red, #bd342d); font: 700 .95rem system-ui, sans-serif; cursor: pointer; }
+.rank-submit:disabled { background: #303030; border-color: #555; color: #b3b3b3; cursor: not-allowed; }
+.rank-results { margin-top: 20px; }
+.rank-results h3 { margin: 0 0 8px; }
+.rank-results p { margin: 8px 0; }
+.rank-attribution a { color: #e5e5e5; }
 
 @media (min-width: 1000px) {
   main { width: min(100% - 64px, 1360px); }
