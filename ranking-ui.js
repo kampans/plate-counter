@@ -115,16 +115,42 @@ async function startRanking() {
   updateRankForm();
 }
 
-function rankLine(name, score, distribution, category) {
+function rankMetric(name, score, distribution, category) {
+  const section = document.createElement("section");
+  const summary = document.createElement("p");
+  section.append(summary);
   const placement = rankIn(distribution, score);
   const text = `${name}: ${(score / 100).toFixed(2)}`;
   if (!placement || placement.size < 5) {
     const suggestion = category === "ALL" ? "" : " Try comparing to all ages.";
-    return `${text} · Not enough data (${placement?.size ?? 0} lifters).${suggestion}`;
+    const size = placement?.size ?? 0;
+    summary.textContent = `${text} · Not enough data (${size} ${size === 1 ? "lifter" : "lifters"}).${suggestion}`;
+    return section;
   }
   const { rank, size, top } = placement;
   const note = size < 20 ? "Small group, treat this as rough." : `Top ${top.toFixed(1)}%`;
-  return `${text} · #${rank} of ${size} · ${note}`;
+  summary.textContent = `${text} · #${rank} of ${size} · ${note}`;
+
+  const table = document.createElement("table");
+  table.className = "rank-neighbors";
+  table.createCaption().textContent = `Nearby ${name} rankings`;
+  const header = table.createTHead().insertRow();
+  for (const label of ["Rank", "Lifter", name]) {
+    const cell = document.createElement("th");
+    cell.scope = "col";
+    cell.textContent = label;
+    header.append(cell);
+  }
+  const body = table.createTBody();
+  for (const row of nearbyRankingRows(distribution, score)) {
+    const entry = body.insertRow();
+    entry.classList.toggle("rank-your-row", Boolean(row.isUser));
+    entry.insertCell().textContent = `#${row.rank}`;
+    entry.insertCell().textContent = row.isUser ? "You" : "Lifter";
+    entry.insertCell().textContent = (row.score / 100).toFixed(2);
+  }
+  section.append(table);
+  return section;
 }
 
 rankForm.addEventListener("input", event => {
@@ -146,11 +172,10 @@ rankForm.addEventListener("submit", event => {
   group.textContent = [sex.selectedOptions[0].textContent, equipment.value, ageLabel(category), rankFederation.label].join(", ");
   const resultTotal = document.createElement("p");
   resultTotal.textContent = `Total: ${total} kg`;
-  const dots = document.createElement("p");
-  dots.textContent = rankLine("DOTS", scores.dots, cohort.dots, category);
-  const gl = document.createElement("p");
-  gl.textContent = scores.gl === null ? "GL not available for this equipment." :
-    rankLine("IPF GL", scores.gl, cohort.gl, category);
+  const dots = rankMetric("DOTS", scores.dots, cohort.dots, category);
+  const gl = scores.gl === null ? document.createElement("p") :
+    rankMetric("IPF GL", scores.gl, cohort.gl, category);
+  if (scores.gl === null) gl.textContent = "GL not available for this equipment.";
   rankResults.replaceChildren(group, resultTotal, dots, gl);
 });
 

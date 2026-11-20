@@ -24,24 +24,39 @@ function rankingScores(sex, bodyweight, total, equipment) {
   };
 }
 
+function scoreBoundary(scores, score, includeEqual) {
+  let start = 0;
+  let end = scores.length;
+  while (start < end) {
+    const middle = Math.floor((start + end) / 2);
+    if (scores[middle] < score || (includeEqual && scores[middle] === score)) start = middle + 1;
+    else end = middle;
+  }
+  return start;
+}
+
 function rankIn(scores, score) {
   const size = scores.length;
   if (size === 0) return null;
 
-  function bound(includeEqual) {
-    let start = 0;
-    let end = size;
-    while (start < end) {
-      const middle = Math.floor((start + end) / 2);
-      if (scores[middle] < score || (includeEqual && scores[middle] === score)) start = middle + 1;
-      else end = middle;
-    }
-    return start;
-  }
-
-  const below = bound(false);
-  const above = size - bound(true);
+  const below = scoreBoundary(scores, score, false);
+  const above = size - scoreBoundary(scores, score, true);
   const ties = size - below - above;
   const percentileBelow = (below + ties / 2) / size * 100;
   return { rank: above + 1, size, percentileBelow, top: Math.max(0.1, 100 - percentileBelow) };
+}
+
+function nearbyRankingRows(scores, score) {
+  const split = scoreBoundary(scores, score, true);
+  const above = scores.slice(split, split + 5).reverse();
+  const below = scores.slice(Math.max(0, split - 5), split).reverse();
+  const rowsFor = entries => entries.map(value => ({
+    score: value,
+    rank: scores.length - scoreBoundary(scores, value, true) + (value < score ? 2 : 1)
+  }));
+  return [
+    ...rowsFor(above),
+    { score, rank: scores.length - split + 1, isUser: true },
+    ...rowsFor(below)
+  ];
 }

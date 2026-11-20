@@ -8,7 +8,7 @@ const context = createContext({});
 for (const file of ["score-formulas.js", "ranking-core.js"]) {
   runInContext(readFileSync(join(__dirname, "..", file), "utf8"), context);
 }
-const { ageToCategory, rankingScores, rankIn } = context;
+const { ageToCategory, rankingScores, rankIn, nearbyRankingRows } = context;
 
 test("calendar-year age category boundaries", () => {
   for (const [age, expected] of [
@@ -26,6 +26,18 @@ test("binary search handles ties, ranking extremes and empty cohorts", () => {
   assert.equal(rankIn(scores, 35000).rank, 1);
   assert.equal(rankIn(scores, 35000).top, 0.1);
   assert.equal(rankIn([], 20000), null);
+});
+
+test("nearby rows include up to five entries on each side of the highlighted score", () => {
+  const scores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const rows = nearbyRankingRows(scores, 6.5);
+  assert.deepEqual(Array.from(rows, row => row.score), [11, 10, 9, 8, 7, 6.5, 6, 5, 4, 3, 2]);
+  assert.equal(rows[5].isUser, true);
+  assert.equal(rows[5].rank, 7);
+  assert.equal(rows[6].rank, 8);
+  assert.equal(nearbyRankingRows(scores, 13)[0].isUser, true);
+  assert.equal(nearbyRankingRows(scores, 0).at(-1).isUser, true);
+  assert.deepEqual(Array.from(nearbyRankingRows([1, 2, 2, 3], 2), row => row.rank), [1, 2, 2, 2, 5]);
 });
 
 test("raw scoring uses OPL hundredths and GL is raw-only", () => {
