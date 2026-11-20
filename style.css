@@ -76,6 +76,10 @@ h1 { margin: 0; font-size: .95rem; font-weight: 750; letter-spacing: -.02em; }
 .counter-details span { color: #595959; }
 .counter-details strong { font-size: .9rem; }
 .controls { padding: 30px 0 28px; }
+.target-load { margin-bottom: 20px; }
+.target-fields { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.target-fields > label:first-child { display: grid; gap: 7px; width: min(100%, 190px); color: #dedede; font-size: .8rem; font-weight: 650; }
+#target-status { min-height: 2lh; margin: 6px 0 0; color: #b3b3b3; font-size: .8rem; line-height: 1.4; }
 .controls-heading { display: flex; align-items: end; justify-content: space-between; gap: 8px; margin-bottom: 20px; }
 .eyebrow { margin: 0 0 5px; color: #a7a7a7; }
 h2 { margin: 0; font-size: 1.4rem; letter-spacing: -.03em; }
@@ -120,8 +124,8 @@ footer { display: flex; justify-content: space-between; border-top: 1px solid #3
 .calculator-inputs label { display: grid; gap: 7px; color: #dedede; font-size: .8rem; font-weight: 650; }
 #score-form label:nth-child(-n+2) { grid-template-rows: 2lh auto; }
 .calculator-wide { grid-column: 1 / -1; }
-.calculator-inputs :is(input, select) { width: 100%; min-width: 0; min-height: 48px; border: 1px solid #555; border-radius: 6px; padding: 10px 12px; color: #f2f2f2; background: #242424; color-scheme: dark; font: 600 1rem system-ui, sans-serif; }
-.calculator-inputs :is(input, select):focus-visible { outline: 3px solid #f2f2f2; outline-offset: 2px; }
+.calculator-inputs :is(input, select), #target-weight { width: 100%; min-width: 0; min-height: 48px; border: 1px solid #555; border-radius: 6px; padding: 10px 12px; color: #f2f2f2; background: #242424; color-scheme: dark; font: 600 1rem system-ui, sans-serif; }
+.calculator-inputs :is(input, select):focus-visible, #target-weight:focus-visible { outline: 3px solid #f2f2f2; outline-offset: 2px; }
 .calculator-note { margin: 12px 0 0; color: #b3b3b3; font-size: .82rem; line-height: 1.5; }
 .calculator-result { display: block; margin-top: 12px; min-height: 1lh; line-height: 1.5; font-weight: 700; font-variant-numeric: tabular-nums; }
 #score-result { min-height: 4lh; }

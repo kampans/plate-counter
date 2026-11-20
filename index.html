@@ -31,6 +31,12 @@
         <div class="counter-details"><p><span>BAR</span><strong id="bar-weight">20 kg</strong></p><p><span>PLATES / SIDE</span><strong id="per-side">0 kg</strong></p></div>
       </section>
       <section class="controls" aria-labelledby="plates-title">
+        <div class="target-load">
+          <div class="target-fields">
+            <label for="target-weight">Target weight (kg)<input id="target-weight" type="number" inputmode="decimal" step="any" placeholder="e.g. 140" aria-describedby="target-status"></label>
+          </div>
+          <p id="target-status" role="status"></p>
+        </div>
         <div class="controls-heading"><div><h2 id="plates-title">Add plates</h2></div><p>One tap adds a pair</p></div>
         <div id="plate-buttons" class="plate-buttons"></div>
         <div class="actions"><button id="undo" type="button" disabled>Undo</button><button id="clear" type="button" disabled>Clear all</button></div>

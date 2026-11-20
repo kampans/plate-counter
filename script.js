@@ -5,7 +5,44 @@ const perSideDisplay = document.getElementById("per-side");
 const plateStack = document.getElementById("plate-stack");
 const undo = document.getElementById("undo");
 const clear = document.getElementById("clear");
+const targetWeight = document.getElementById("target-weight");
+const targetStatus = document.getElementById("target-status");
+const platesByWeight = [...config.plates].sort((a, b) => b.weight - a.weight);
+const targetStep = 2 * platesByWeight.at(-1).weight;
+const maxTarget = 2000;
 function formatWeight(weight) { return Number(weight.toFixed(2)).toString(); }
+
+function applyTarget() {
+  targetStatus.textContent = "";
+  if (targetWeight.value === "" && !targetWeight.validity.badInput) return;
+
+  const target = targetWeight.valueAsNumber;
+  const minimum = config.barWeight;
+  const incrementCount = (target - minimum) / targetStep;
+  if (!Number.isInteger(incrementCount) || target < minimum || target > maxTarget) {
+    targetStatus.textContent = `Enter ${minimum}–${maxTarget} kg in ${targetStep} kg steps.`;
+    return;
+  }
+
+  let remaining = (target - minimum) / 2;
+  const load = [];
+  for (const plate of platesByWeight) {
+    const pairs = Math.floor(remaining / plate.weight);
+    remaining -= pairs * plate.weight;
+    for (let i = 0; i < pairs; i++) load.push(plate);
+  }
+  if (remaining !== 0) {
+    targetStatus.textContent = "This weight cannot be loaded with the available plates.";
+    return;
+  }
+  history.splice(0, history.length, ...load);
+  render();
+}
+
+function resetTarget() {
+  targetWeight.value = "";
+  targetStatus.textContent = "";
+}
 
 function render() {
   const perSide = history.reduce((sum, plate) => sum + plate.weight, 0);
@@ -50,7 +87,7 @@ const choices = [...config.plates, config.collar].map(item => {
     tag.textContent = "Collar";
     button.appendChild(tag);
   }
-  button.addEventListener("click", () => { history.push(item); render(); });
+  button.addEventListener("click", () => { resetTarget(); history.push(item); render(); });
 
   const choice = document.createElement("div");
   choice.className = "plate-choice";
@@ -60,7 +97,8 @@ const choices = [...config.plates, config.collar].map(item => {
   document.getElementById("plate-buttons").appendChild(choice);
   return { item, countLabel };
 });
-undo.addEventListener("click", () => { history.pop(); render(); });
-clear.addEventListener("click", () => { history.length = 0; render(); });
+targetWeight.addEventListener("input", applyTarget);
+undo.addEventListener("click", () => { resetTarget(); history.pop(); render(); });
+clear.addEventListener("click", () => { resetTarget(); history.length = 0; render(); });
 render();
 
