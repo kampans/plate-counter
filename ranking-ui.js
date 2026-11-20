@@ -119,7 +119,7 @@ async function startRanking() {
   updateRankForm();
 }
 
-function rankMetric(name, score, distribution, category) {
+function rankMetric(name, score, distribution, lifterIndexes, category, submitted) {
   const section = document.createElement("section");
   const summary = document.createElement("p");
   section.append(summary);
@@ -137,9 +137,9 @@ function rankMetric(name, score, distribution, category) {
 
   const table = document.createElement("table");
   table.className = "rank-neighbors";
-  table.createCaption().textContent = `Nearby ${name} rankings`;
+  table.createCaption().textContent = `Nearby ${name} rankings (lifts in kg)`;
   const header = table.createTHead().insertRow();
-  for (const label of ["Rank", "Lifter", name]) {
+  for (const label of ["Rank", "Lifter", "Squat", "Bench", "Deadlift", "Total", name]) {
     const cell = document.createElement("th");
     cell.scope = "col";
     cell.textContent = label;
@@ -149,11 +149,21 @@ function rankMetric(name, score, distribution, category) {
   for (const row of nearbyRankingRows(distribution, score)) {
     const entry = body.insertRow();
     entry.classList.toggle("rank-your-row", Boolean(row.isUser));
+    const lifter = row.isUser ? submitted : rankData.lifters?.[lifterIndexes?.[row.index]];
     entry.insertCell().textContent = `#${row.rank}`;
-    entry.insertCell().textContent = row.isUser ? "You" : "Lifter";
+    entry.insertCell().textContent = lifter?.name ?? "Lifter";
+    for (const lift of ["squat", "bench", "deadlift", "total"]) {
+      entry.insertCell().textContent = lifter?.[lift] ?? "—";
+    }
     entry.insertCell().textContent = (row.score / 100).toFixed(2);
   }
-  section.append(table);
+  const scroll = document.createElement("div");
+  scroll.className = "rank-table-scroll";
+  scroll.tabIndex = 0;
+  scroll.setAttribute("role", "region");
+  scroll.setAttribute("aria-label", `Nearby ${name} rankings`);
+  scroll.append(table);
+  section.append(scroll);
   return section;
 }
 
@@ -183,7 +193,14 @@ function showRanking() {
   resultTotal.textContent = `Total: ${total} kg`;
   const metric = scoring.value;
   const label = metric === "gl" ? "IPF GL Points" : "DOTS";
-  const ranking = rankMetric(label, scores[metric], cohort[metric], category);
+  const submitted = {
+    name: "You",
+    squat: squat.valueAsNumber,
+    bench: bench.valueAsNumber,
+    deadlift: deadlift.valueAsNumber,
+    total
+  };
+  const ranking = rankMetric(label, scores[metric], cohort[metric], cohort[`${metric}Lifters`], category, submitted);
   rankResults.replaceChildren(group, resultTotal, ranking);
 }
 

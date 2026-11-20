@@ -150,10 +150,13 @@ footer { display: flex; justify-content: space-between; border-top: 1px solid #3
 .rank-results { margin-top: 20px; }
 .rank-results h3 { margin: 0 0 8px; }
 .rank-results p { margin: 8px 0; }
+.rank-table-scroll { overflow-x: auto; }
+.rank-table-scroll:focus-visible { outline: 2px solid #f2f2f2; outline-offset: 2px; }
 .rank-neighbors { width: 100%; border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
 .rank-neighbors caption { margin: 8px 0; text-align: left; font-weight: 700; }
 .rank-neighbors :is(th, td) { padding: 8px 10px; border-bottom: 1px solid #3a3a3a; text-align: left; }
-.rank-neighbors :is(th, td):last-child { text-align: right; }
+.rank-neighbors :is(th, td):not(:nth-child(2)) { text-align: right; white-space: nowrap; }
+.rank-neighbors :is(th, td):nth-child(2) { min-width: 10ch; }
 .rank-neighbors .rank-your-row { background: #582522; color: #fff; font-weight: 750; }
 .rank-your-row td:first-child { box-shadow: inset 3px 0 #bd342d; }
 .rank-attribution a { color: #e5e5e5; }

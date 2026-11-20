@@ -32,6 +32,7 @@ test("nearby rows include up to five entries on each side of the highlighted sco
   const scores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const rows = nearbyRankingRows(scores, 6.5);
   assert.deepEqual(Array.from(rows, row => row.score), [11, 10, 9, 8, 7, 6.5, 6, 5, 4, 3, 2]);
+  for (const row of rows.filter(row => !row.isUser)) assert.equal(scores[row.index], row.score);
   assert.equal(rows[5].isUser, true);
   assert.equal(rows[5].rank, 7);
   assert.equal(rows[6].rank, 8);

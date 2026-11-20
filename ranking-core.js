@@ -48,15 +48,14 @@ function rankIn(scores, score) {
 
 function nearbyRankingRows(scores, score) {
   const split = scoreBoundary(scores, score, true);
-  const above = scores.slice(split, split + 5).reverse();
-  const below = scores.slice(Math.max(0, split - 5), split).reverse();
-  const rowsFor = entries => entries.map(value => ({
+  const rowsFor = (start, end) => scores.slice(start, end).map((value, offset) => ({
     score: value,
+    index: start + offset,
     rank: scores.length - scoreBoundary(scores, value, true) + (value < score ? 2 : 1)
-  }));
+  })).reverse();
   return [
-    ...rowsFor(above),
+    ...rowsFor(split, split + 5),
     { score, rank: scores.length - split + 1, isUser: true },
-    ...rowsFor(below)
+    ...rowsFor(Math.max(0, split - 5), split)
   ];
 }

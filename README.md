@@ -12,7 +12,7 @@ Edit `config.js` to change the bar weight, plate colors, or profile dimensions i
 
 ## Rankings
 
-Open the **Rank** tab to compare full-power meet results against the included Irish federations. The browser uses bundled, anonymous score distributions. The data date on the page identifies the OpenPowerlifting snapshot.
+Open the **Rank** tab to compare full-power meet results against the included Irish federations. The bundled rankings include lifter names, best lifts, and totals from published OpenPowerlifting meet results. The data date on the page identifies the snapshot.
 
 Download the [OpenPowerlifting bulk ZIP](https://openpowerlifting.gitlab.io/opl-csv/files/openpowerlifting-latest.zip), then run:
 
