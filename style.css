@@ -77,8 +77,10 @@ h1 { margin: 0; font-size: .95rem; font-weight: 750; letter-spacing: -.02em; }
 .counter-details strong { font-size: .9rem; }
 .controls { padding: 30px 0 28px; }
 .target-load { margin-bottom: 20px; }
-.target-fields { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.target-fields > label:first-child { display: grid; gap: 7px; width: min(100%, 190px); color: #dedede; font-size: .8rem; font-weight: 650; }
+.target-fields { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+.target-fields > label:first-child { display: grid; flex: 0 1 190px; min-width: 0; gap: 7px; color: #dedede; font-size: .8rem; font-weight: 650; }
+.comp-load { display: flex; align-items: center; gap: 7px; min-height: 48px; color: #dedede; font-size: .8rem; font-weight: 650; cursor: pointer; }
+.comp-load input { width: 18px; height: 18px; margin: 0; accent-color: #ddd; cursor: pointer; }
 #target-status { min-height: 2lh; margin: 6px 0 0; color: #b3b3b3; font-size: .8rem; line-height: 1.4; }
 .controls-heading { display: flex; align-items: end; justify-content: space-between; gap: 8px; margin-bottom: 20px; }
 .eyebrow { margin: 0 0 5px; color: #a7a7a7; }

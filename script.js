@@ -6,6 +6,7 @@ const plateStack = document.getElementById("plate-stack");
 const undo = document.getElementById("undo");
 const clear = document.getElementById("clear");
 const targetWeight = document.getElementById("target-weight");
+const compLoad = document.getElementById("comp-load");
 const targetStatus = document.getElementById("target-status");
 const platesByWeight = [...config.plates].sort((a, b) => b.weight - a.weight);
 const targetStep = 2 * platesByWeight.at(-1).weight;
@@ -17,7 +18,8 @@ function applyTarget() {
   if (targetWeight.value === "" && !targetWeight.validity.badInput) return;
 
   const target = targetWeight.valueAsNumber;
-  const minimum = config.barWeight;
+  const collarWeight = compLoad.checked ? 2 * config.collar.weight : 0;
+  const minimum = config.barWeight + collarWeight;
   const incrementCount = (target - minimum) / targetStep;
   if (!Number.isInteger(incrementCount) || target < minimum || target > maxTarget) {
     targetStatus.textContent = `Enter ${minimum}–${maxTarget} kg in ${targetStep} kg steps.`;
@@ -35,6 +37,7 @@ function applyTarget() {
     targetStatus.textContent = "This weight cannot be loaded with the available plates.";
     return;
   }
+  if (compLoad.checked) load.push(config.collar);
   history.splice(0, history.length, ...load);
   render();
 }
@@ -98,6 +101,7 @@ const choices = [...config.plates, config.collar].map(item => {
   return { item, countLabel };
 });
 targetWeight.addEventListener("input", applyTarget);
+compLoad.addEventListener("change", applyTarget);
 undo.addEventListener("click", () => { resetTarget(); history.pop(); render(); });
 clear.addEventListener("click", () => { resetTarget(); history.length = 0; render(); });
 render();
