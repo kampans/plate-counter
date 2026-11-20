@@ -51,7 +51,7 @@ function renderScores() {
   const gl = calculateGlPoints(weight, result, division.value, eventType.value, equipment.value);
   const glText = gl === null
     ? `IPF GLP requires a bodyweight of at least ${glDivisions[division.value].minBodyweight} kg.`
-    : `${gl.toFixed(3)} IPF GLP`;
+    : `${gl.toFixed(3)} IPF GL`;
   const dotsText = isFullMeet
     ? `${calculateDots(weight, result, division.value).toFixed(2)} DOTS`
     : "DOTS available for full powerlifting totals.";
