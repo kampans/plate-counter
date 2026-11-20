@@ -110,7 +110,8 @@ button:focus-visible { outline: 3px solid #f2f2f2; outline-offset: 3px; }
 footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid #3a3a3a; padding: 19px 0 25px; color: #9c9c9c; font-size: .58rem; }
 .footer-credit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; color: #dedede; font-size: .8rem; letter-spacing: 0; }
 .contact-badges { display: flex; flex-wrap: wrap; gap: 6px; }
-.contact-badges a { display: inline-flex; align-items: center; min-height: 36px; padding: 5px 12px; border: 1px solid var(--badge-border); border-radius: 999px; color: var(--badge-text); background: var(--badge-bg); text-decoration: none; }
+.contact-badges a { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--badge-border); border-radius: 50%; color: var(--badge-text); background: var(--badge-bg); }
+.contact-badges svg { width: 19px; height: 19px; }
 .contact-badges a:hover { border-color: currentColor; }
 .contact-badges a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .contact-instagram { --badge-text: #f4c4dd; --badge-bg: #382331; --badge-border: #744961; }
