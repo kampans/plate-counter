@@ -60,12 +60,19 @@ function render() {
   perSideDisplay.textContent = `${formatWeight(perSide)} kg`;
   const plates = history.filter(item => item !== config.collar);
   const collars = history.filter(item => item === config.collar);
-  plateStack.replaceChildren(...[...plates, ...collars].map(plate => {
+  plateStack.replaceChildren(...[...plates, ...collars].map((plate, index) => {
     const profile = document.createElement("span");
     profile.className = plate === config.collar ? "plate-profile collar-profile" : "plate-profile";
     if (plate.color) profile.style.setProperty("--plate-color", plate.color);
     profile.style.setProperty("--diameter", plate.diameter);
     profile.style.setProperty("--thickness", plate.thickness);
+    if (plate !== config.collar) {
+      const number = document.createElement("span");
+      number.className = "plate-number";
+      number.textContent = index + 1;
+      number.style.color = plate.textColor;
+      profile.append(number);
+    }
     return profile;
   }));
   choices.forEach(({ item, countLabel }) => {

@@ -20,12 +20,16 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
 .visual-heading { display: flex; justify-content: space-between; color: #b0b0b0; }
 .visual-heading span:last-child { color: #7a7a7a; }
 .barbell-view {
-  --barbell-height: clamp(210px, 57vw, 310px);
+  --barbell-height: clamp(250px, 68vw, 340px);
+  --max-plate-scale: .56px;
+  container-type: inline-size;
   height: var(--barbell-height);
   overflow: auto hidden;
 }
 .barbell {
-  --plate-scale: .42px;
+  --shaft-width: clamp(36px, 15cqw, 105px);
+  --shoulder-width: 12px;
+  --plate-scale: clamp(.42px, calc((100cqw - var(--shaft-width) - var(--shoulder-width)) / 415), var(--max-plate-scale));
   --sleeve-length: calc(415 * var(--plate-scale));
   display: flex;
   align-items: center;
@@ -33,8 +37,8 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
   margin-inline: auto;
   height: var(--barbell-height);
 }
-.barbell-shaft { flex: 0 0 auto; width: clamp(55px, 15vw, 105px); height: calc(29 * var(--plate-scale)); background: #888d93; }
-.barbell-shoulder { flex: 0 0 12px; height: 28px; background: #b0b4b9; }
+.barbell-shaft { flex: 0 0 auto; width: var(--shaft-width); height: calc(29 * var(--plate-scale)); background: #888d93; }
+.barbell-shoulder { flex: 0 0 var(--shoulder-width); height: calc(62 * var(--plate-scale)); background: #b0b4b9; }
 .barbell-sleeve { position: relative; flex: 0 0 auto; width: var(--sleeve-length); }
 .barbell-sleeve::before {
   content: "";
@@ -46,7 +50,7 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
   transform: translateY(-50%);
   background: #a4a8ad;
 }
-#plate-stack { position: relative; display: flex; align-items: center; gap: 1px; }
+#plate-stack { position: relative; display: flex; align-items: center; }
 .plate-profile {
   flex: none;
   width: calc(var(--thickness) * var(--plate-scale));
@@ -54,7 +58,16 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
   border-radius: 2px;
   background: var(--plate-color);
 }
-.plate-profile:not(.collar-profile) { border: 1px solid #000; }
+.plate-profile:not(.collar-profile) { position: relative; border: 1px solid #000; }
+.plate-number {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font: 700 8px/1 system-ui, sans-serif;
+}
 .collar-profile {
   position: relative;
   border-radius: 1px;
@@ -135,8 +148,7 @@ footer { display: grid; align-items: center; justify-items: center; gap: 12px; m
   main { width: min(100% - 64px, 1000px); }
   .workspace { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(270px, 1fr); gap: 20px; align-items: stretch; padding-top: 35px; }
   .visual { min-width: 0; }
-  .barbell-view { --barbell-height: 300px; }
-  .barbell { --plate-scale: .52px; }
+  .barbell-view { --barbell-height: 340px; --max-plate-scale: .68px; }
   .counter { display: flex; flex-direction: column; justify-content: space-between; padding: 25px; }
   .total { margin: 20px 0; font-size: clamp(4rem, 8vw, 6rem); }
   .controls { grid-column: 1 / -1; padding: 20px 0 32px; }
