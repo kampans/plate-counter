@@ -54,6 +54,7 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
   border-radius: 2px;
   background: var(--plate-color);
 }
+.plate-profile:not(.collar-profile) { border: 1px solid #000; }
 .collar-profile {
   position: relative;
   border-radius: 1px;
