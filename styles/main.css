@@ -105,8 +105,8 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
   border: 1px solid #000;
 }
 .plate-weight {
-  padding-inline: 1px;
-  font: 700 7px/1 system-ui, sans-serif;
+  padding-inline: .5px;
+  font: 700 10px/1 system-ui, sans-serif;
   white-space: nowrap;
 }
 .plate-number {
