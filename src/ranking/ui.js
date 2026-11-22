@@ -213,4 +213,5 @@ function showRanking() {
 
 updateRankForm();
 startRanking();
-document.getElementById("rank-reminder").showModal();
+const rankReminder = document.getElementById("rank-reminder");
+setTimeout(() => rankReminder.showModal(), 1000);
