@@ -11,7 +11,35 @@ const targetStatus = document.getElementById("target-status");
 const platesByWeight = [...config.plates].sort((a, b) => b.weight - a.weight);
 const targetStep = 2 * platesByWeight.at(-1).weight;
 const maxTarget = 2000;
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let totalAnimationFrame;
+let previousTotal = Number(totalDisplay.textContent);
 function formatWeight(weight) { return Number(weight.toFixed(2)).toString(); }
+
+function updateTotal(total) {
+  cancelAnimationFrame(totalAnimationFrame);
+  const nextTotal = Number(total);
+  const start = Number(totalDisplay.textContent);
+  const increase = nextTotal - start;
+  const isIncreasing = nextTotal > previousTotal;
+  previousTotal = nextTotal;
+  if (!isIncreasing || reducedMotion.matches) {
+    totalDisplay.textContent = total;
+    return;
+  }
+
+  const startedAt = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - startedAt) / 240, 1);
+    if (progress >= 1) {
+      totalDisplay.textContent = total;
+      return;
+    }
+    totalDisplay.textContent = formatWeight(start + Math.floor(increase * progress));
+    totalAnimationFrame = requestAnimationFrame(tick);
+  }
+  totalAnimationFrame = requestAnimationFrame(tick);
+}
 
 function applyTarget() {
   targetStatus.textContent = "";
@@ -55,9 +83,9 @@ function render() {
     counts.set(plate, (counts.get(plate) ?? 0) + 1);
   }
   const total = formatWeight(config.barWeight + perSide * 2);
-  totalDisplay.textContent = total;
+  updateTotal(total);
   document.getElementById("total-announcement").textContent = `Total weight: ${total} kilograms`;
-  perSideDisplay.textContent = `${formatWeight(perSide)} kg`;
+  perSideDisplay.textContent = formatWeight(perSide);
   const plates = history.filter(item => item !== config.collar);
   const collars = history.filter(item => item === config.collar);
   plateStack.replaceChildren(...[...plates, ...collars].map((plate, index) => {
@@ -81,7 +109,7 @@ function render() {
   });
   undo.disabled = clear.disabled = history.length === 0;
 }
-document.getElementById("bar-weight").textContent = `${formatWeight(config.barWeight)} kg`;
+document.getElementById("bar-weight").textContent = formatWeight(config.barWeight);
 const choices = [...config.plates, config.collar].map(item => {
   const isCollar = item === config.collar;
   const button = document.createElement("button");
