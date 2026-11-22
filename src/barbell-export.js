@@ -20,9 +20,10 @@ function createBarbellPng(barbell, caption) {
   }));
   const bottom = Math.max(sleeveTop + sleeveHeight, ...parts.map(({ box }) => box.bottom));
   const padding = 24;
+  const captionInset = 12;
   const captionSize = 24;
   const canvas = document.createElement("canvas");
-  const width = Math.max(right - left, caption.length * captionSize) + padding * 2;
+  const width = Math.max(right - left, caption.length * captionSize + captionInset * 2) + padding * 2;
   const height = bottom - top + padding * 3 + captionSize;
   const scale = Math.min(3, 4096 / Math.max(width, height));
   canvas.width = Math.ceil(width * scale);
@@ -77,16 +78,12 @@ function createBarbellPng(barbell, caption) {
   }
 
   const totalStyle = getComputedStyle(document.getElementById("total"));
-  ctx.font = `${totalStyle.fontWeight} ${captionSize}px ${totalStyle.fontFamily}`;
+  ctx.font = `400 ${captionSize}px ${totalStyle.fontFamily}`;
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
-  ctx.lineWidth = 3;
-  ctx.lineJoin = "round";
-  ctx.strokeStyle = "#202226";
   ctx.fillStyle = "#fff";
   const captionY = bottom + padding + captionSize / 2;
-  ctx.strokeText(caption, left, captionY);
-  ctx.fillText(caption, left, captionY);
+  ctx.fillText(caption, left + captionInset, captionY);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(blob => {
