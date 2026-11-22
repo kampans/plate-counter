@@ -129,6 +129,16 @@
         </nav>
       </div>
     </footer>
+    <dialog id="share-reminder" class="site-dialog" aria-labelledby="share-reminder-title" aria-describedby="share-reminder-message">
+      <h2 id="share-reminder-title">Share Plate counter?</h2>
+      <p id="share-reminder-message">Send the site to a friend who might find it useful.</p>
+      <form method="dialog" class="share-reminder-actions">
+        <button type="submit" autofocus>Maybe later</button>
+        <button id="share-site" type="button">Share site</button>
+      </form>
+      <label id="share-site-link" hidden>Copy this link<input type="url" readonly></label>
+      <p id="share-site-status" class="sr-only" role="status"></p>
+    </dialog>
     <dialog id="install-help" class="site-dialog" aria-labelledby="install-help-title">
       <h2 id="install-help-title">Install or create a shortcut</h2>
       <p>On desktop Chrome, open the three-dot menu, choose <strong>Cast, save, and share</strong>, then select <strong>Install page as app</strong> or <strong>Create shortcut</strong>.</p>
@@ -137,6 +147,7 @@
     </dialog>
   </main>
   <script src="src/install.js"></script>
+  <script src="src/share-reminder.js"></script>
   <script src="config/plates.js"></script>
   <script src="src/barbell-export.js"></script>
   <script src="src/counter.js"></script>

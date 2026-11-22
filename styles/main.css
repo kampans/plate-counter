@@ -298,7 +298,7 @@ footer { display: grid; align-items: center; justify-items: center; gap: 12px; m
 .about-links a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .site-dialog { width: min(calc(100% - 32px), 420px); padding: 24px; border: 1px solid #555; border-radius: 12px; background: #242424; color: #f2f2f2; }
 .site-dialog::backdrop { background: #000b; }
-#rank-reminder {
+:is(#rank-reminder, #share-reminder) {
   padding: clamp(20px, 5vw, 28px);
   border-color: #bdbfbd;
   border-radius: var(--panel-radius);
@@ -306,11 +306,17 @@ footer { display: grid; align-items: center; justify-items: center; gap: 12px; m
   color: #202226;
   box-shadow: 0 16px 48px #0005;
 }
-#rank-reminder h2 { margin-bottom: 6px; font-size: clamp(1.35rem, 5vw, 1.75rem); line-height: 1.15; }
+:is(#rank-reminder, #share-reminder) h2 { margin-bottom: 6px; font-size: clamp(1.35rem, 5vw, 1.75rem); line-height: 1.15; }
 #rank-reminder p { margin: 0 0 20px; font-size: 20px; color: #50545a; }
-#rank-reminder button { border-radius: 10px; background: var(--surface-raised); }
-#rank-reminder button:hover { background: #353b42; }
-#rank-reminder button:focus-visible { outline-color: #303338; }
+:is(#rank-reminder, #share-reminder) button { border-radius: 10px; background: var(--surface-raised); }
+:is(#rank-reminder, #share-reminder) button:hover { background: #353b42; }
+:is(#rank-reminder, #share-reminder) button:focus-visible { outline-color: #303338; }
+#share-reminder-message { margin: 0 0 20px; color: #50545a; }
+.share-reminder-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+#share-reminder button[type="submit"] { border: 1px solid #bdbfbd; background: transparent; color: #303338; }
+#share-reminder button[type="submit"]:hover { background: #dbdcd6; }
+#share-site-link:not([hidden]) { display: grid; gap: 6px; margin-top: 12px; font-size: .85rem; }
+#share-site-link input { width: 100%; padding: 8px; border: 1px solid #bdbfbd; border-radius: 6px; }
 @media (prefers-reduced-motion: no-preference) {
   #rank-reminder[open], #rank-reminder[open]::backdrop { animation: rank-reminder-fade-in 240ms ease-out; }
   @keyframes rank-reminder-fade-in { from { opacity: 0; } to { opacity: 1; } }
