@@ -317,6 +317,8 @@ footer { display: grid; align-items: center; justify-items: center; gap: 12px; m
 #share-reminder button[type="submit"]:hover { background: #dbdcd6; }
 #share-site-link:not([hidden]) { display: grid; gap: 6px; margin-top: 12px; font-size: .85rem; }
 #share-site-link input { width: 100%; padding: 8px; border: 1px solid #bdbfbd; border-radius: 6px; }
+#share-site-status { margin: 10px 0 0; color: #50545a; }
+#share-site-status:empty { margin: 0; }
 @media (prefers-reduced-motion: no-preference) {
   #rank-reminder[open], #rank-reminder[open]::backdrop { animation: rank-reminder-fade-in 240ms ease-out; }
   @keyframes rank-reminder-fade-in { from { opacity: 0; } to { opacity: 1; } }

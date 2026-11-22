@@ -27,25 +27,19 @@
 
   shareButton.addEventListener("click", async () => {
     shareButton.disabled = true;
+    status.textContent = "";
     try {
-      if (navigator.share) {
-        try {
-          await navigator.share({ title: "Plate counter", url });
-          reminder.close();
-          return;
-        } catch (error) {
-          if (error.name === "AbortError") return;
-        }
+      // Start both actions on the same tap, before the share sheet consumes activation.
+      const copy = navigator.clipboard?.writeText(url).then(() => true, () => false);
+      const share = navigator.share?.({ title: "Plate counter", url }).catch(() => {});
+      if (await copy) {
+        linkLabel.hidden = true;
+        status.textContent = "Link copied to clipboard.";
+      } else {
+        linkLabel.querySelector("input").value = url;
+        linkLabel.hidden = false;
       }
-      await navigator.clipboard.writeText(url);
-      shareButton.textContent = "Link copied";
-      status.textContent = "Site link copied to clipboard.";
-    } catch {
-      linkLabel.hidden = false;
-      const link = linkLabel.querySelector("input");
-      link.value = url;
-      link.focus();
-      link.select();
+      await share;
     } finally {
       shareButton.disabled = false;
     }
