@@ -7,6 +7,10 @@ const undo = document.getElementById("undo");
 const clear = document.getElementById("clear");
 const targetWeight = document.getElementById("target-weight");
 const compLoad = document.getElementById("comp-load");
+const barType = document.getElementById("bar-type");
+const barWeightDisplay = document.getElementById("bar-weight");
+const barbellWeightDisplay = document.getElementById("barbell-weight");
+let barWeight = config.barWeight;
 const targetStatus = document.getElementById("target-status");
 const platesByWeight = [...config.plates].sort((a, b) => b.weight - a.weight);
 const targetStep = 2 * platesByWeight.at(-1).weight;
@@ -47,7 +51,7 @@ function applyTarget() {
 
   const target = targetWeight.valueAsNumber;
   const collarWeight = compLoad.checked ? 2 * config.collar.weight : 0;
-  const minimum = config.barWeight + collarWeight;
+  const minimum = barWeight + collarWeight;
   const incrementCount = (target - minimum) / targetStep;
   if (!Number.isInteger(incrementCount) || target < minimum || target > maxTarget) {
     targetStatus.textContent = `Enter ${minimum}–${maxTarget} kg in ${targetStep} kg steps.`;
@@ -68,6 +72,7 @@ function applyTarget() {
   if (compLoad.checked) load.push(config.collar);
   history.splice(0, history.length, ...load);
   render();
+  return true;
 }
 
 function resetTarget() {
@@ -82,7 +87,8 @@ function render() {
     perSide += plate.weight;
     counts.set(plate, (counts.get(plate) ?? 0) + 1);
   }
-  const total = formatWeight(config.barWeight + perSide * 2);
+  const total = formatWeight(barWeight + perSide * 2);
+  barWeightDisplay.textContent = barbellWeightDisplay.textContent = formatWeight(barWeight);
   updateTotal(total);
   document.getElementById("total-announcement").textContent = `Total weight: ${total} kilograms`;
   perSideDisplay.textContent = formatWeight(perSide);
@@ -109,7 +115,9 @@ function render() {
   });
   undo.disabled = clear.disabled = history.length === 0;
 }
-document.getElementById("bar-weight").textContent = formatWeight(config.barWeight);
+const barWeights = [...new Set([15, 20, 25, config.barWeight])].sort((a, b) => a - b);
+barType.replaceChildren(...barWeights.map(weight => new Option(`${formatWeight(weight)} kg`, weight)));
+barType.value = String(barWeight);
 const choices = [...config.plates, config.collar].map(item => {
   const isCollar = item === config.collar;
   const button = document.createElement("button");
@@ -142,6 +150,10 @@ const choices = [...config.plates, config.collar].map(item => {
 });
 targetWeight.addEventListener("input", applyTarget);
 compLoad.addEventListener("change", applyTarget);
+barType.addEventListener("change", () => {
+  barWeight = Number(barType.value);
+  if (!applyTarget()) render();
+});
 undo.addEventListener("click", () => { resetTarget(); history.pop(); render(); });
 clear.addEventListener("click", () => { resetTarget(); history.length = 0; render(); });
 render();

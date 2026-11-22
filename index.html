@@ -19,7 +19,7 @@
       <section class="visual" aria-label="Barbell viewed from one side">
         <div class="barbell-view">
           <div class="barbell" aria-hidden="true">
-            <div class="barbell-shaft"></div>
+            <div class="barbell-shaft"><span id="barbell-weight" class="barbell-weight"></span></div>
             <div class="barbell-shoulder"></div>
             <div class="barbell-sleeve"><div id="plate-stack"></div></div>
           </div>
@@ -42,6 +42,10 @@
         <div class="controls-heading"><div><h2 id="plates-title">Add plates</h2></div><p>One tap adds a pair</p></div>
         <div id="plate-buttons" class="plate-buttons"></div>
         <div class="actions"><button id="undo" type="button" disabled>Undo</button><button id="clear" type="button" disabled>Clear all</button></div>
+        <section class="bar-type" aria-labelledby="bar-type-title">
+          <h2 id="bar-type-title"><label for="bar-type">Bar type</label></h2>
+          <select id="bar-type"></select>
+        </section>
       </section>
     </div>
     <aside class="calculators" aria-label="Lifting calculators">
