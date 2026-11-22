@@ -29,11 +29,15 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
 .header-note { color: #999999; }
 .workspace { padding-top: 23px; }
 .visual { position: relative; min-width: 0; }
-.share-barbell {
+.barbell-actions {
   position: absolute;
   z-index: 1;
   inset-block-start: 10px;
   inset-inline-end: 10px;
+  display: flex;
+  gap: 6px;
+}
+.barbell-actions button {
   min-height: 44px;
   padding: 0 12px;
   border: 1px solid var(--line);
@@ -43,8 +47,8 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
   font: 650 .8rem system-ui, sans-serif;
   cursor: pointer;
 }
-.share-barbell:hover { background: var(--surface-raised); }
-.share-barbell:disabled { opacity: .65; cursor: wait; }
+.barbell-actions button:hover { background: var(--surface-raised); }
+.barbell-actions button:disabled { opacity: .65; cursor: wait; }
 .visual-heading { display: flex; justify-content: space-between; color: #b0b0b0; }
 .visual-heading span:last-child { color: #7a7a7a; }
 .barbell-view {

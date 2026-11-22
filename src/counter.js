@@ -11,7 +11,10 @@ const barType = document.getElementById("bar-type");
 const barWeightDisplay = document.getElementById("bar-weight");
 const barbellWeightDisplay = document.getElementById("barbell-weight");
 const shareBarbell = document.getElementById("share-barbell");
+const downloadBarbell = document.getElementById("download-barbell");
 const shareStatus = document.getElementById("share-status");
+const barbellVisual = document.querySelector(".barbell");
+let shareFeedbackTimer;
 let barWeight = config.barWeight;
 const targetStatus = document.getElementById("target-status");
 const platesByWeight = [...config.plates].sort((a, b) => b.weight - a.weight);
@@ -159,26 +162,36 @@ barType.addEventListener("change", () => {
 undo.addEventListener("click", () => { resetTarget(); history.pop(); render(); });
 clear.addEventListener("click", () => { resetTarget(); history.length = 0; render(); });
 shareBarbell.addEventListener("click", async () => {
+  clearTimeout(shareFeedbackTimer);
   shareBarbell.disabled = true;
+  shareStatus.textContent = "";
+  try {
+    if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
+      throw new Error("Image clipboard is unavailable.");
+    }
+    // Start the clipboard write within the click, before PNG encoding finishes.
+    const png = createBarbellPng(barbellVisual, `${formatWeight(previousTotal)} kg`);
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": png })]);
+    shareBarbell.textContent = "Copied";
+    shareStatus.textContent = "Barbell PNG copied to clipboard.";
+  } catch {
+    shareBarbell.textContent = "Copy failed";
+    shareStatus.textContent = "Could not copy the image. Use Download to save it.";
+  } finally {
+    shareBarbell.disabled = false;
+    shareFeedbackTimer = setTimeout(() => { shareBarbell.textContent = "Share"; }, 2500);
+  }
+});
+downloadBarbell.addEventListener("click", async () => {
+  downloadBarbell.disabled = true;
   shareStatus.textContent = "";
   const weight = formatWeight(previousTotal);
   try {
-    const png = await createBarbellPng(document.querySelector(".barbell"), `${weight} kg`);
-    const filename = `barbell-${weight}kg.png`;
-    const file = new File([png], filename, { type: "image/png" });
-    const shareData = { files: [file] };
-    if (navigator.share && navigator.canShare?.(shareData)) {
-      try {
-        await navigator.share(shareData);
-        return;
-      } catch (error) {
-        if (error.name === "AbortError") return;
-      }
-    }
-    const url = URL.createObjectURL(file);
+    const png = await createBarbellPng(barbellVisual, `${weight} kg`);
+    const url = URL.createObjectURL(png);
     const link = document.createElement("a");
     link.href = url;
-    link.download = filename;
+    link.download = `barbell-${weight}kg.png`;
     document.body.append(link);
     link.click();
     link.remove();
@@ -187,7 +200,7 @@ shareBarbell.addEventListener("click", async () => {
   } catch {
     shareStatus.textContent = "Could not export the barbell image. Try again.";
   } finally {
-    shareBarbell.disabled = false;
+    downloadBarbell.disabled = false;
   }
 });
 render();

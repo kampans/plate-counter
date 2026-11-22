@@ -17,7 +17,10 @@
     <div class="app-layout">
     <div class="workspace">
       <section class="visual" aria-label="Barbell viewed from one side">
-        <button class="share-barbell" id="share-barbell" type="button" aria-label="Share barbell image">Share</button>
+        <div class="barbell-actions">
+          <button id="share-barbell" type="button" title="Copy barbell PNG to clipboard">Share</button>
+          <button id="download-barbell" type="button" title="Download barbell PNG">Download</button>
+        </div>
         <p id="share-status" class="sr-only" role="status"></p>
         <div class="barbell-view">
           <div class="barbell" aria-hidden="true">
