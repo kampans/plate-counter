@@ -106,11 +106,15 @@ function render() {
     profile.style.setProperty("--diameter", plate.diameter);
     profile.style.setProperty("--thickness", plate.thickness);
     if (plate !== config.collar) {
+      const weightLabel = document.createElement("span");
+      weightLabel.className = "plate-weight";
+      weightLabel.textContent = `${formatWeight(plate.weight)} kg`;
+      weightLabel.style.color = plate.labelColor ?? plate.textColor;
       const number = document.createElement("span");
       number.className = "plate-number";
       number.textContent = index + 1;
       number.style.color = plate.textColor;
-      profile.append(number);
+      profile.append(weightLabel, number);
     }
     return profile;
   }));

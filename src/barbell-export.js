@@ -32,7 +32,7 @@ function createBarbellPng(barbell, caption) {
   ctx.scale(scale, scale);
   ctx.translate((width - (right - left)) / 2 - left, padding - top);
 
-  function drawLabel(label, vertical = false) {
+  function drawLabel(label) {
     const box = label.getBoundingClientRect();
     const style = getComputedStyle(label);
     const fontSize = parseFloat(style.fontSize);
@@ -41,10 +41,16 @@ function createBarbellPng(barbell, caption) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     const x = box.left + box.width / 2;
-    if (vertical) {
+    if (label.classList.contains("plate-number")) {
       [...label.textContent].forEach((digit, index) => {
         ctx.fillText(digit, x, box.top + (index + .5) * fontSize);
       });
+    } else if (label.classList.contains("plate-weight")) {
+      ctx.save();
+      ctx.translate(x, box.top + box.height / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText(label.textContent, 0, 0);
+      ctx.restore();
     } else {
       ctx.fillText(label.textContent, x, box.top + box.height / 2);
     }
@@ -73,8 +79,7 @@ function createBarbellPng(barbell, caption) {
         parseFloat(knob.width), parseFloat(knob.height));
       ctx.fillRect(box.right - 3, box.top, 3, box.height);
     }
-    const label = element.firstElementChild;
-    if (label) drawLabel(label, label.classList.contains("plate-number"));
+    for (const label of element.children) drawLabel(label);
   }
 
   const totalStyle = getComputedStyle(document.getElementById("total"));
