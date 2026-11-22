@@ -38,16 +38,18 @@ function createBarbellPng(barbell, caption) {
     const fontSize = parseFloat(style.fontSize);
     ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
     ctx.fillStyle = style.color;
+    ctx.globalAlpha = Number(style.opacity);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     const x = box.left + box.width / 2;
-    if (label.classList.contains("plate-number")) {
+    if (style.writingMode === "vertical-rl") {
       [...label.textContent].forEach((digit, index) => {
-        ctx.fillText(digit, x, box.top + (index + .5) * fontSize);
+        ctx.fillText(digit, x, box.top + parseFloat(style.paddingTop) + (index + .5) * fontSize);
       });
     } else {
       ctx.fillText(label.textContent, x, box.top + box.height / 2);
     }
+    ctx.globalAlpha = 1;
   }
 
   ctx.fillStyle = sleeveStyle.backgroundColor;

@@ -108,7 +108,9 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
   padding-inline: .5px;
   font: 700 10px/1 system-ui, sans-serif;
   white-space: nowrap;
+  opacity: .8;
 }
+.plate-weight-stacked { writing-mode: vertical-rl; text-orientation: upright; }
 .plate-number {
   position: absolute;
   bottom: 2px;

@@ -108,6 +108,9 @@ function render() {
     if (plate !== config.collar) {
       const weightLabel = document.createElement("span");
       weightLabel.className = "plate-weight";
+      if (plate.weight === 2.5 || plate.weight === 1.25) {
+        weightLabel.classList.add("plate-weight-stacked");
+      }
       weightLabel.textContent = formatWeight(plate.weight);
       weightLabel.style.color = plate.labelColor ?? plate.textColor;
       const number = document.createElement("span");
