@@ -17,11 +17,6 @@
     <div class="app-layout">
     <div class="workspace">
       <section class="visual" aria-label="Barbell viewed from one side">
-        <div class="barbell-actions">
-          <button id="share-barbell" type="button" title="Copy barbell PNG to clipboard">Share</button>
-          <button id="download-barbell" type="button" title="Download barbell PNG">Download</button>
-        </div>
-        <p id="share-status" class="sr-only" role="status"></p>
         <div class="barbell-view">
           <div class="barbell" aria-hidden="true">
             <div class="barbell-shaft"><span id="barbell-weight" class="barbell-weight"></span></div>
@@ -31,7 +26,20 @@
         </div>
       </section>
       <section class="counter" aria-label="Barbell weight">
-        <div class="counter-heading"><p>Total weight</p></div>
+        <div class="counter-heading">
+          <p>Total weight</p>
+          <div class="barbell-actions">
+            <button id="share-barbell" type="button" aria-label="Share barbell image by copying to clipboard" title="Copy barbell PNG to clipboard">
+              <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M5 12v8h14v-8"/></svg>
+              <svg class="copied-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+              <svg class="copy-error-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+            </button>
+            <button id="download-barbell" type="button" aria-label="Download barbell PNG" title="Download barbell PNG">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/></svg>
+            </button>
+          </div>
+        </div>
+        <p id="share-status" class="sr-only" role="status"></p>
         <div class="total"><span id="total" aria-live="off">20</span> <span class="total-unit">kg</span></div>
         <p id="total-announcement" class="sr-only" aria-live="polite"></p>
         <div class="counter-details"><p><span>BAR</span><strong id="bar-weight">20</strong></p><p><span>PLATES / SIDE</span><strong id="per-side">0</strong></p></div>

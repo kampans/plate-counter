@@ -170,6 +170,7 @@ undo.addEventListener("click", () => { resetTarget(); history.pop(); render(); }
 clear.addEventListener("click", () => { resetTarget(); history.length = 0; render(); });
 shareBarbell.addEventListener("click", async () => {
   clearTimeout(shareFeedbackTimer);
+  delete shareBarbell.dataset.feedback;
   shareBarbell.disabled = true;
   shareStatus.textContent = "";
   try {
@@ -179,14 +180,14 @@ shareBarbell.addEventListener("click", async () => {
     // Start the clipboard write within the click, before PNG encoding finishes.
     const png = createBarbellPng(barbellVisual, `${formatWeight(previousTotal)} kg`);
     await navigator.clipboard.write([new ClipboardItem({ "image/png": png })]);
-    shareBarbell.textContent = "Copied";
+    shareBarbell.dataset.feedback = "copied";
     shareStatus.textContent = "Barbell PNG copied to clipboard.";
   } catch {
-    shareBarbell.textContent = "Copy failed";
+    shareBarbell.dataset.feedback = "error";
     shareStatus.textContent = "Could not copy the image. Use Download to save it.";
   } finally {
     shareBarbell.disabled = false;
-    shareFeedbackTimer = setTimeout(() => { shareBarbell.textContent = "Share"; }, 2500);
+    shareFeedbackTimer = setTimeout(() => { delete shareBarbell.dataset.feedback; }, 2500);
   }
 });
 downloadBarbell.addEventListener("click", async () => {
