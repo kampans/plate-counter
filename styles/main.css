@@ -306,7 +306,8 @@ footer { display: grid; align-items: center; justify-items: center; gap: 12px; m
   color: #202226;
   box-shadow: 0 16px 48px #0005;
 }
-#rank-reminder h2 { font-size: clamp(1.35rem, 5vw, 1.75rem); line-height: 1.15; }
+#rank-reminder h2 { margin-bottom: 6px; font-size: clamp(1.35rem, 5vw, 1.75rem); line-height: 1.15; }
+#rank-reminder p { margin: 0 0 20px; color: #50545a; }
 #rank-reminder button { border-radius: 10px; background: var(--surface-raised); }
 #rank-reminder button:hover { background: #353b42; }
 #rank-reminder button:focus-visible { outline-color: #303338; }
