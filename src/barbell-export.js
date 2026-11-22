@@ -20,7 +20,7 @@ function createBarbellPng(barbell, caption) {
   }));
   const bottom = Math.max(sleeveTop + sleeveHeight, ...parts.map(({ box }) => box.bottom));
   const padding = 24;
-  const captionInset = 12;
+  const captionInset = 24;
   const captionSize = 24;
   const canvas = document.createElement("canvas");
   const width = Math.max(right - left, caption.length * captionSize + captionInset * 2) + padding * 2;
@@ -79,7 +79,7 @@ function createBarbellPng(barbell, caption) {
   }
 
   const totalStyle = getComputedStyle(document.getElementById("total"));
-  ctx.font = `400 ${captionSize}px ${totalStyle.fontFamily}`;
+  ctx.font = `600 ${captionSize}px ${totalStyle.fontFamily}`;
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
   ctx.fillStyle = "#fff";
