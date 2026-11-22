@@ -267,7 +267,9 @@ footer { display: grid; align-items: center; justify-items: center; gap: 12px; m
   .target-load { width: fit-content; max-width: 100%; }
   .plate-buttons { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
   .plate-button { width: 76px; max-width: 100%; }
-  .plate-actions { grid-template-columns: minmax(0, 320px) minmax(0, 160px); }
+  .plate-actions { grid-template: "bar-type actions" / minmax(0, 160px) minmax(0, 320px); }
+  .plate-actions #bar-type { grid-area: bar-type; }
+  .plate-actions .actions { grid-area: actions; }
 }
 @media (prefers-reduced-motion: reduce) { .plate-button { transition: none; } }
 
