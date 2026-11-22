@@ -76,17 +76,17 @@ function createBarbellPng(barbell, caption) {
     if (label) drawLabel(label, label.classList.contains("plate-number"));
   }
 
-  ctx.font = `750 ${captionSize}px system-ui, sans-serif`;
-  ctx.textAlign = "center";
+  const totalStyle = getComputedStyle(document.getElementById("total"));
+  ctx.font = `${totalStyle.fontWeight} ${captionSize}px ${totalStyle.fontFamily}`;
+  ctx.textAlign = "left";
   ctx.textBaseline = "middle";
   ctx.lineWidth = 3;
   ctx.lineJoin = "round";
   ctx.strokeStyle = "#202226";
   ctx.fillStyle = "#fff";
-  const captionX = (left + right) / 2;
   const captionY = bottom + padding + captionSize / 2;
-  ctx.strokeText(caption, captionX, captionY);
-  ctx.fillText(caption, captionX, captionY);
+  ctx.strokeText(caption, left, captionY);
+  ctx.fillText(caption, left, captionY);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(blob => {
