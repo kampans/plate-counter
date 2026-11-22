@@ -74,7 +74,7 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
   height: var(--barbell-height);
 }
 .barbell-shaft { display: flex; align-items: center; flex: 0 0 auto; width: var(--shaft-width); height: calc(29 * var(--plate-scale)); padding-inline-start: 5px; background: #888d93; }
-.barbell-weight { color: #303338; font-size: .625rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.barbell-weight { color: #303338; font-size: .725rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
 .barbell-shoulder { flex: 0 0 var(--shoulder-width); height: calc(62 * var(--plate-scale)); background: #b0b4b9; }
 .barbell-sleeve { position: relative; flex: 0 0 auto; width: var(--sleeve-length); }
 .barbell-sleeve::before {
@@ -106,7 +106,7 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
 }
 .plate-weight {
   padding-inline: .5px;
-  font: 700 10px/1 system-ui, sans-serif;
+  font: 700 15px/1 system-ui, sans-serif;
   white-space: nowrap;
   opacity: .8;
 }
