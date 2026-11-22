@@ -28,13 +28,31 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
 .header-note, .visual-heading, .eyebrow, .counter-heading, .counter-details span, footer { font-size: .62rem; letter-spacing: .12em; font-weight: 700; }
 .header-note { color: #999999; }
 .workspace { padding-top: 23px; }
+.visual { position: relative; min-width: 0; }
+.share-barbell {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  color: inherit;
+  font: 650 .8rem system-ui, sans-serif;
+  cursor: pointer;
+}
+.share-barbell:hover { background: var(--surface-raised); }
+.share-barbell:disabled { opacity: .65; cursor: wait; }
 .visual-heading { display: flex; justify-content: space-between; color: #b0b0b0; }
 .visual-heading span:last-child { color: #7a7a7a; }
 .barbell-view {
   --barbell-height: clamp(282px, 68vw + 32px, 372px);
   --max-plate-scale: .56px;
   container-type: inline-size;
-  height: var(--barbell-height);
+  height: calc(var(--barbell-height) + 40px);
+  padding-block-start: 40px;
   overflow: auto hidden;
   border-radius: var(--panel-radius);
   background: radial-gradient(ellipse at center, #292e35, var(--surface) 75%);
@@ -220,7 +238,6 @@ footer { display: grid; align-items: center; justify-items: center; gap: 12px; m
 @media (min-width: 700px) {
   main { width: min(100% - 64px, 1000px); }
   .workspace { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(270px, 1fr); gap: 20px; align-items: stretch; padding-top: 35px; }
-  .visual { min-width: 0; }
   .barbell-view { --barbell-height: 340px; --max-plate-scale: .68px; }
   .counter { display: flex; flex-direction: column; justify-content: space-between; margin-block-start: 0; padding: 25px; }
   .total { margin: 20px 0; font-size: min(23cqi, 7rem); }

@@ -10,6 +10,8 @@ const compLoad = document.getElementById("comp-load");
 const barType = document.getElementById("bar-type");
 const barWeightDisplay = document.getElementById("bar-weight");
 const barbellWeightDisplay = document.getElementById("barbell-weight");
+const shareBarbell = document.getElementById("share-barbell");
+const shareStatus = document.getElementById("share-status");
 let barWeight = config.barWeight;
 const targetStatus = document.getElementById("target-status");
 const platesByWeight = [...config.plates].sort((a, b) => b.weight - a.weight);
@@ -156,5 +158,37 @@ barType.addEventListener("change", () => {
 });
 undo.addEventListener("click", () => { resetTarget(); history.pop(); render(); });
 clear.addEventListener("click", () => { resetTarget(); history.length = 0; render(); });
+shareBarbell.addEventListener("click", async () => {
+  shareBarbell.disabled = true;
+  shareStatus.textContent = "";
+  const weight = formatWeight(previousTotal);
+  try {
+    const png = await createBarbellPng(document.querySelector(".barbell"), `${weight} kg`);
+    const filename = `barbell-${weight}kg.png`;
+    const file = new File([png], filename, { type: "image/png" });
+    const shareData = { files: [file] };
+    if (navigator.share && navigator.canShare?.(shareData)) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (error) {
+        if (error.name === "AbortError") return;
+      }
+    }
+    const url = URL.createObjectURL(file);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    shareStatus.textContent = "Barbell PNG download started.";
+  } catch {
+    shareStatus.textContent = "Could not export the barbell image. Try again.";
+  } finally {
+    shareBarbell.disabled = false;
+  }
+});
 render();
 

@@ -17,6 +17,8 @@
     <div class="app-layout">
     <div class="workspace">
       <section class="visual" aria-label="Barbell viewed from one side">
+        <button class="share-barbell" id="share-barbell" type="button" aria-label="Share barbell image">Share</button>
+        <p id="share-status" class="sr-only" role="status"></p>
         <div class="barbell-view">
           <div class="barbell" aria-hidden="true">
             <div class="barbell-shaft"><span id="barbell-weight" class="barbell-weight"></span></div>
@@ -124,6 +126,7 @@
   </main>
   <script src="src/install.js"></script>
   <script src="config/plates.js"></script>
+  <script src="src/barbell-export.js"></script>
   <script src="src/counter.js"></script>
   <script src="src/calculators/one-rm.js"></script>
   <script src="src/score-formulas.js"></script>
