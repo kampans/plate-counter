@@ -108,7 +108,7 @@ function render() {
     if (plate !== config.collar) {
       const weightLabel = document.createElement("span");
       weightLabel.className = "plate-weight";
-      weightLabel.textContent = `${formatWeight(plate.weight)} kg`;
+      weightLabel.textContent = formatWeight(plate.weight);
       weightLabel.style.color = plate.labelColor ?? plate.textColor;
       const number = document.createElement("span");
       number.className = "plate-number";

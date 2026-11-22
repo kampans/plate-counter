@@ -45,12 +45,6 @@ function createBarbellPng(barbell, caption) {
       [...label.textContent].forEach((digit, index) => {
         ctx.fillText(digit, x, box.top + (index + .5) * fontSize);
       });
-    } else if (label.classList.contains("plate-weight")) {
-      ctx.save();
-      ctx.translate(x, box.top + box.height / 2);
-      ctx.rotate(-Math.PI / 2);
-      ctx.fillText(label.textContent, 0, 0);
-      ctx.restore();
     } else {
       ctx.fillText(label.textContent, x, box.top + box.height / 2);
     }

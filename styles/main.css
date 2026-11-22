@@ -97,15 +97,16 @@ main { display: flex; flex-direction: column; width: min(100% - 32px, 1000px); m
 }
 .plate-profile:not(.collar-profile) {
   position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--thickness) * var(--plate-scale) * 1.16);
+  min-width: max-content;
   height: calc(var(--diameter) * var(--plate-scale) * 1.16);
   border: 1px solid #000;
 }
 .plate-weight {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  font: 700 8px/1 system-ui, sans-serif;
+  padding-inline: 1px;
+  font: 700 7px/1 system-ui, sans-serif;
   white-space: nowrap;
 }
 .plate-number {
