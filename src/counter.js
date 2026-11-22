@@ -128,8 +128,8 @@ function render() {
   undo.disabled = clear.disabled = history.length === 0;
 }
 const barWeights = [...new Set([15, 20, 25, config.barWeight])].sort((a, b) => a - b);
-barType.replaceChildren(...barWeights.map(weight => new Option(`${formatWeight(weight)} kg`, weight)));
-barType.value = String(barWeight);
+barType.append(...barWeights.map(weight => new Option(`${formatWeight(weight)} kg`, weight)));
+barType.value = "";
 const choices = [...config.plates, config.collar].map(item => {
   const isCollar = item === config.collar;
   const button = document.createElement("button");
